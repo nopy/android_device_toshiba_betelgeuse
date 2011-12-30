@@ -2,9 +2,9 @@ on early-init
     mount debugfs debugfs /sys/kernel/debug
 
     export EXTERNAL_STORAGE /mnt/sdcard
-    mkdir /mnt/sdcard 
-    mkdir /mnt/external_sd
-    mkdir /mnt/usb_storage
+    mkdir /mnt/sdcard 0000 system system
+    mkdir /mnt/external_sd 0000 system system
+    mkdir /mnt/usb_storage 0000 system system
 
     # for backwards compatibility
     symlink /mnt/sdcard /sdcard
@@ -12,10 +12,10 @@ on early-init
     mkdir /mnt/external2 0000 system system
 
 on fs
-    mount ext4 /dev/block/mmcblk0p4 /system wait ro
+    mount ext4 /dev/block/mmcblk0p1 /system wait ro
     setprop ro.crypto.tmpfs_options size=128m,mode=0771,uid=1000,gid=1000
-    mount ext4 /dev/block/mmcblk0p8 /data wait noatime
-    mount ext4 /dev/block/mmcblk0p5 /cache wait noatime
+    mount ext4 /dev/block/mmcblk0p5 /data wait noatime
+    mount ext4 /dev/block/mmcblk0p2 /cache wait noatime
     mkdir /flexrom 0770 root system
     insmod /system/wifi/ar6000.ko
 
