@@ -98,6 +98,7 @@ PRODUCT_PACKAGES += \
     librs_jni \
     audio.primary.tegra \
     liba2dp \
+    lights.tegra \
     com.android.future.usb.accessory
 
 # Filesystem management tools
