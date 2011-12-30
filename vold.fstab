@@ -10,15 +10,6 @@
 ## <sysfs_path> - List of sysfs paths to source devices
 ######################
 
-dev_mount storage /mnt/sdcard 8 /devices/platform/tegra-sdhci.3/mmc_host/mmc0
-dev_mount sdcard /mnt/external_sd auto /devices/platform/tegra-sdhci.1/mmc_host/mmc0 /devices/platform/tegra-sdhci.1/mmc_host/mmc1
-
-dev_mount usb0 /mnt/usb_storage auto /devices/platform/tegra-ehci
-#dev_mount usb0 /mnt/sdcard/usb0-disk%d auto /devices/platform/tegra-ehci.2/usb.*/block/sda
-#dev_mount usb1 /mnt/sdcard/usb1-disk%d auto /devices/platform/tegra-ehci.2/usb.*/block/sdb
-#dev_mount usb2 /mnt/sdcard/usb2-disk%d auto /devices/platform/tegra-ehci.2/usb.*/block/sdc
-#dev_mount usb3 /mnt/sdcard/usb3-disk%d auto /devices/platform/tegra-ehci.2/usb.*/block/sdd
-#dev_mount usb4 /mnt/sdcard/usb4-disk%d auto /devices/platform/tegra-ehci.2/usb.*/block/sde
-#dev_mount usb5 /mnt/sdcard/usb5-disk%d auto /devices/platform/tegra-ehci.2/usb.*/block/sdf
-#dev_mount usb6 /mnt/sdcard/usb6-disk%d auto /devices/platform/tegra-ehci.2/usb.*/block/sdg
-#dev_mount usb7 /mnt/sdcard/usb7-disk%d auto /devices/platform/tegra-ehci.2/usb.*/block/sdh
+dev_mount storage_internal /mnt/sdcard 7 /devices/platform/sdhci-tegra.3/mmc_host/mmc1
+dev_mount external_sdcard /mnt/external_sd auto /devices/platform/sdhci-tegra.1/mmc_host/mmc2
+dev_mount external_usb_disk /mnt/usb_storage auto /devices/platform/tegra-ehci
