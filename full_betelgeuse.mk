@@ -40,5 +40,6 @@ $(call inherit-product-if-exists, vendor/toshiba/betelgeuse/betelgeuse-vendor.mk
 
 PRODUCT_NAME := full_betelgeuse
 PRODUCT_DEVICE := betelgeuse
-PRODUCT_BRAND := Acer
-PRODUCT_MODEL := Full AOSP on betelgeuse
+PRODUCT_BRAND := toshiba
+PRODUCT_MODEL := folio100
+PRODUCT_MANUFACTURER := toshiba
