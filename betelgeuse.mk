@@ -100,7 +100,8 @@ PRODUCT_PACKAGES += \
     audio.primary.tegra \
     liba2dp \
     lights.tegra \
-    com.android.future.usb.accessory
+    com.android.future.usb.accessory \
+    libpkip
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \
