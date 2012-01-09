@@ -25,3 +25,6 @@
 /dev/block/mmcblk0p1    0660    system  system
 /dev/tegra-crypto       0660    system  system
 /dev/bma150             0660    system  system
+/dev/ttyACM*    0660    radio   system
+/dev/ttyHS*    0660    radio   system
+/dev/tegra_dc* 0660 system system
