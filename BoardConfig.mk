@@ -77,7 +77,7 @@ BOARD_HAS_NO_MISC_PARTITION := true
 # Indicate that the board has an Internal SD Card
 #BOARD_HAS_SDCARD_INTERNAL := true
 
-BOARD_DATA_DEVICE := /dev/block/mmcblk0p6
+BOARD_DATA_DEVICE := /dev/block/mmcblk0p5
 BOARD_DATA_FILESYSTEM := ext4
 BOARD_CACHE_DEVICE := /dev/block/mmcblk0p2
 BOARD_CACHE_FILESYSTEM := ext4
