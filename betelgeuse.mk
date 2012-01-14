@@ -101,6 +101,7 @@ PRODUCT_PACKAGES += \
     liba2dp \
     lights.tegra \
     com.android.future.usb.accessory \
+    camera.tegra \
     libpkip
 
 # Filesystem management tools
