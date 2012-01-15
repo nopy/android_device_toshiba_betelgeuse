@@ -38,28 +38,12 @@
 #include <hardware/audio_effect.h>
 #include <audio_effects/effect_aec.h>
 
-#define MIXER_PCM_PLAYBACK_VOLUME     		"PCM Playback Volume"
-
 #define MIXER_SPEAKER_PLAYBACK_VOLUME		"Line Out Volume" // OK
 #define MIXER_SPEAKER_PLAYBACK_SWITCH		"Int Spk Switch" // OK
-#define MIXER_SPK				"Speaker Mix"
-#define MIXER_SPK_ENABLE_DAC			"Speaker Mix DAC2SPK Playback Switch"
 
 #define MIXER_HEADSET_PLAYBACK_VOLUME		"Headphone Volume" // OK
 #define MIXER_HEADSET_OUTENABLE			"Headphone Switch" // OK
 #define MIXER_HEADSET_PLAYBACK_SWITCH		"Headphone ZC Switch" // Not sure
-
-#define MIXER_AUXOUT_ENABLE			"Auxout Playback Switch"
-#define MIXER_AUX_OUTMUX			"AuxOut Mux"
-
-#define MIXER_MIC_CAPTURE_VOLUME		"Mic1 Capture Volume"
-#define MIXER_MIC_CAPTURE_SWITCH		"Int Mic Switch"
-
-#define MIXER_HPL_OUTMUX			"Left Headphone Mux"
-#define MIXER_HPR_OUTMUX			"Right Headphone Mux"
-#define MIXER_HP_ENABLE_DAC			"HP Mix DAC2HP Playback Switch"
-#define MIXER_HP_LEFT				"HP Left Mix"
-#define MIXER_HP_RIGHT				"HP Right Mix"
 
 /* ALSA card */
 #define CARD_ADAM 0
@@ -137,20 +121,12 @@ struct route_setting
 struct route_setting defaults[] = {
     /* general */
     {
-        .ctl_name = MIXER_PCM_PLAYBACK_VOLUME,
-        .intval = 20,
-    },
-    {
         .ctl_name = MIXER_HEADSET_PLAYBACK_VOLUME,
         .intval = PERC_TO_HEADSET_VOLUME(1),
     },
     {
         .ctl_name = MIXER_SPEAKER_PLAYBACK_VOLUME,
         .intval = 20,
-    },
-    {
-        .ctl_name = MIXER_MIC_CAPTURE_VOLUME,
-        .intval = PERC_TO_CAPTURE_VOLUME(1),
     },
     {
         .ctl_name = MIXER_HEADSET_PLAYBACK_SWITCH,
@@ -161,38 +137,9 @@ struct route_setting defaults[] = {
         .intval = 1,
     },
     {
-        .ctl_name = MIXER_MIC_CAPTURE_SWITCH,
-        .intval = 1,
-    },
-    {
 	.ctl_name = MIXER_HEADSET_OUTENABLE,
         .intval = 1,
     },
-    {
-        .ctl_name = MIXER_HPL_OUTMUX,
-        .strval = MIXER_HP_LEFT,
-    },
-    {
-        .ctl_name = MIXER_HPR_OUTMUX,
-        .strval = MIXER_HP_RIGHT,
-    },
-    {
-        .ctl_name = MIXER_AUX_OUTMUX,
-        .strval = MIXER_SPK,
-    },
-    {
-        .ctl_name = MIXER_HP_ENABLE_DAC,
-        .intval = 1,
-    },
-    {
-        .ctl_name = MIXER_SPK_ENABLE_DAC,
-        .intval = 1,
-    },
-    {
-        .ctl_name = MIXER_AUXOUT_ENABLE,
-        .intval = 1,
-    },
-
     {
         .ctl_name = NULL,
     },
@@ -1864,20 +1811,6 @@ static int adev_open(const hw_module_t* module, const char* name,
         return -EINVAL;
     }
 
-    adev->mixer_ctls.mic_volume = mixer_get_ctl_by_name(adev->mixer,
-                                           MIXER_MIC_CAPTURE_VOLUME);
-	if (!adev->mixer_ctls.mic_volume) { 
-		LOGE("Unable to find '%s' mixer control",MIXER_MIC_CAPTURE_VOLUME);
-		goto error_out;
-	}
-	
-    adev->mixer_ctls.pcm_volume = mixer_get_ctl_by_name(adev->mixer,
-                                           MIXER_PCM_PLAYBACK_VOLUME);
-	if (!adev->mixer_ctls.pcm_volume) { 
-		LOGE("Unable to find '%s' mixer control",MIXER_PCM_PLAYBACK_VOLUME);
-		goto error_out;
-	}
-										   
     adev->mixer_ctls.headset_volume = mixer_get_ctl_by_name(adev->mixer,
                                            MIXER_HEADSET_PLAYBACK_VOLUME);
 	if (!adev->mixer_ctls.headset_volume) { 
@@ -1892,13 +1825,6 @@ static int adev_open(const hw_module_t* module, const char* name,
 		goto error_out;
 	}
 
-    adev->mixer_ctls.mic_switch = mixer_get_ctl_by_name(adev->mixer,
-                                           MIXER_MIC_CAPTURE_SWITCH);
-	if (!adev->mixer_ctls.mic_switch) { 
-		LOGE("Unable to find '%s' mixer control",MIXER_MIC_CAPTURE_SWITCH);
-		goto error_out;
-	}
-	
     adev->mixer_ctls.headset_switch = mixer_get_ctl_by_name(adev->mixer,
                                            MIXER_HEADSET_PLAYBACK_SWITCH);
 	if (!adev->mixer_ctls.headset_switch) { 
