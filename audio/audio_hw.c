@@ -122,11 +122,12 @@ struct route_setting defaults[] = {
     /* general */
     {
         .ctl_name = MIXER_HEADSET_PLAYBACK_VOLUME,
-        .intval = PERC_TO_HEADSET_VOLUME(1),
+        //.intval = PERC_TO_HEADSET_VOLUME(1),
+	.intval = 63,
     },
     {
         .ctl_name = MIXER_SPEAKER_PLAYBACK_VOLUME,
-        .intval = 20,
+        .intval = 63,
     },
     {
         .ctl_name = MIXER_HEADSET_PLAYBACK_SWITCH,
