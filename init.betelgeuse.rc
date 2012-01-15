@@ -8,8 +8,6 @@ on early-init
 
     # for backwards compatibility
     symlink /mnt/sdcard /sdcard
-    mkdir /mnt/external1 0000 system system
-    mkdir /mnt/external2 0000 system system
 
 on fs
     mount ext4 /dev/block/mmcblk0p1 /system wait ro
