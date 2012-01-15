@@ -102,7 +102,11 @@ PRODUCT_PACKAGES += \
     lights.tegra \
     com.android.future.usb.accessory \
     camera.tegra \
-    libpkip
+    libpkip \
+    libaudioutils \
+    tinyplay \
+    tinycap \
+    tinymix
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \

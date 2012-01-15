@@ -1,6 +1,5 @@
 # Camera Setup
-USE_CAMERA_STUB := true
-#BOARD_USE_FROYO_LIBCAMERA := true
+USE_CAMERA_STUB := false
 BOARD_FIRST_CAMERA_FRONT_FACING := true
 
 # inherit from the proprietary version
@@ -57,9 +56,9 @@ BOARD_KERNEL_CMDLINE := no_console_suspend=1 console=tty0,115200n8 video=tegrafb
 BOARD_KERNEL_BASE := 0x10000000
 BOARD_PAGE_SIZE := 0x00000800
 
-BOARD_USES_GENERIC_AUDIO := false
-BOARD_PREBUILT_LIBAUDIO := true
-BOARD_USES_AUDIO_LEGACY := true
+BOARD_USES_GENERIC_AUDIO := true
+BOARD_USES_AUDIO_LEGACY := false
+TARGET_USES_OLD_LIBSENSORS_HAL := false
 
 BOARD_EGL_CFG := device/toshiba/betelgeuse/egl.cfg
 TARGET_OTA_ASSERT_DEVICE := betelgeuse,folio100
