@@ -102,6 +102,7 @@ PRODUCT_PACKAGES += \
     lights.tegra \
     com.android.future.usb.accessory \
     camera.tegra \
+    audio.primary.tegra \
     libpkip \
     libaudioutils \
     tinyplay \
