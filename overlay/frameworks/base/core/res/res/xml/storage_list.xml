@@ -41,11 +41,13 @@
     <storage android:mountPoint="/mnt/external_sd"
              android:storageDescription="@string/storage_sd_card"
              android:primary="false"
+	     android:removable="true"
              android:emulated="false"
              android:mtpReserve="100" />
     <storage android:mountPoint="/mnt/usb_storage"
              android:storageDescription="@string/storage_usb"
              android:primary="false"
+	     android:removable="true"
              android:emulated="false"
              android:mtpReserve="100" />
 </StorageList>
