@@ -29,6 +29,14 @@ extern "C" {
 
 #define HEADERFRAME1 0xaf
 
+//#define DEBUG_FRAME 0
+
+#ifdef DEBUG_FRAME
+#define LOG_FRAME LOGD
+#else
+#define LOG_FRAME LOGV
+#endif
+
 namespace android {
 
 V4L2Camera::V4L2Camera ()
@@ -538,7 +546,7 @@ int V4L2Camera::getFps() const
 /* Grab frame in YUYV mode */
 void V4L2Camera::GrabRawFrame (void *frameBuffer, int maxSize)
 {
-	LOGD("V4L2Camera::GrabRawFrame: frameBuffer:%p, len:%d",frameBuffer,maxSize);
+	LOG_FRAME("V4L2Camera::GrabRawFrame: frameBuffer:%p, len:%d",frameBuffer,maxSize);
     int ret;
 
 	/* DQ */
@@ -559,7 +567,7 @@ void V4L2Camera::GrabRawFrame (void *frameBuffer, int maxSize)
 	// And the pointer to the start of the image
 	uint8_t* src = (uint8_t*)videoIn->mem[videoIn->buf.index] + videoIn->capCropOffset;
 	
-	LOGD("V4L2Camera::GrabRawFrame - Got Raw frame (%dx%d) (buf:%d@0x%p, len:%d)",videoIn->format.fmt.pix.width,videoIn->format.fmt.pix.height,videoIn->buf.index,src,videoIn->buf.bytesused);
+	LOG_FRAME("V4L2Camera::GrabRawFrame - Got Raw frame (%dx%d) (buf:%d@0x%p, len:%d)",videoIn->format.fmt.pix.width,videoIn->format.fmt.pix.height,videoIn->buf.index,src,videoIn->buf.bytesused);
 	
 	/* Avoid crashing! - Make sure there is enough room in the output buffer! */
 	if (maxSize < videoIn->outFrameSize) {
@@ -704,7 +712,7 @@ void V4L2Camera::GrabRawFrame (void *frameBuffer, int maxSize)
 				break;
 		}
 		
-		LOGD("V4L2Camera::GrabRawFrame - Copied frame to destination 0x%p",frameBuffer);
+		LOG_FRAME("V4L2Camera::GrabRawFrame - Copied frame to destination 0x%p",frameBuffer);
 	}
 	
 	/* And Queue the buffer again */
@@ -716,7 +724,7 @@ void V4L2Camera::GrabRawFrame (void *frameBuffer, int maxSize)
 
     nQueued++;
 	
-	LOGD("V4L2Camera::GrabRawFrame - Queued buffer");
+	LOG_FRAME("V4L2Camera::GrabRawFrame - Queued buffer");
 
 }
 
