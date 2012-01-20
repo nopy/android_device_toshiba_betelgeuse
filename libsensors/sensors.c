@@ -115,7 +115,7 @@ LOGD("write_cmd(%s, %s, %d )", path, cmd, size ) ;
 /* implement individual sensor enable and disables */
 static int activate_acc(int enable)
 {
-LOGD("activate_acc(%d)") ;
+LOGD("activate_acc(%d)",enable) ;
 
 	int ret = 0;
 
@@ -150,7 +150,7 @@ LOGD("active_acc disabling") ;
 
 static int activate_mag(int enable)
 {
-LOGD("activate_mag(%d)") ;
+LOGD("activate_mag(%d)", enable) ;
 	int ret = 0;
 	if (enable) {
 		if (count_mag == 0) {
@@ -176,7 +176,7 @@ LOGD("activate_mag(%d)") ;
 
 static int activate_gyr(int enable)
 {
-LOGD("activate_gyr(%d)") ;
+LOGD("activate_gyr(%d)", enable ) ;
 	int ret = 0;
 	if (enable) {
 		if (count_gyr == 0) {
@@ -201,7 +201,7 @@ LOGD("activate_gyr(%d)") ;
 
 static int activate_lux(int enable)
 {
-LOGD("activate_lux(%d)") ;
+LOGD("activate_lux(%d)", enable ) ;
 	int ret = -1;
 	if (enable) {
 		if (count_lux == 0) {
@@ -224,7 +224,7 @@ LOGD("activate_lux(%d)") ;
 
 static int activate_prox(int enable)
 {
-LOGD("activate_prox(%d)") ;
+LOGD("activate_prox(%d)", enable ) ;
 	int ret = -1;
 	static pthread_t thread = -1;
 
@@ -262,7 +262,7 @@ LOGD("activate_prox(%d)") ;
 
 static int activate_orientation(int enable)
 {
-LOGD("activate_orientation(%d)") ;
+LOGD("activate_orientation(%d)", enable) ;
 	int ret = 0;
 	if (enable) {
 		if (count_orien == 0) {
@@ -806,7 +806,7 @@ static void m_determine_acc_chip()
 	int fd;
 	int nread;
 	char buf[4];
-	acc_id = 0;
+	acc_id = 50;
 
 /*	fd = open(PATH_ID_ACC, O_RDONLY);
 
