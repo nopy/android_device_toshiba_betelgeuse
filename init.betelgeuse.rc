@@ -70,6 +70,12 @@ on boot
     chmod 664 /sys/bus/i2c/drivers/mm_ak8975/0-000c/mode
     chmod 664 /sys/bus/i2c/drivers/mm_ak8975/0-000c/show_flux
 
+    chown system system /sys/bus/i2c/drivers/lsm303dlh_a/0-0009/mode
+    chown system system /sys/bus/i2c/drivers/lsm303dlh_a/0-0009/range
+    chown system system /sys/bus/i2c/drivers/lsm303dlh_a/0-0009/rate
+    chown system system /sys/bus/i2c/drivers/lsm303dlh_a/0-0009/data
+    chown system system /sys/bus/i2c/drivers/mm_ak8975/0-000c/mode
+    chown system system /sys/bus/i2c/drivers/mm_ak8975/0-000c/show_flux
 
 # Power management settings
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 216000
