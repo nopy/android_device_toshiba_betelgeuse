@@ -107,7 +107,8 @@ PRODUCT_PACKAGES += \
     libaudioutils \
     tinyplay \
     tinycap \
-    tinymix
+    tinymix \
+    hotplug
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \
