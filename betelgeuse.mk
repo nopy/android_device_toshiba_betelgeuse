@@ -108,7 +108,8 @@ PRODUCT_PACKAGES += \
     tinyplay \
     tinycap \
     tinymix \
-    hotplug
+    hotplug \
+    sensors.tegra.so
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \
