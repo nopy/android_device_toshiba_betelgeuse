@@ -116,6 +116,6 @@ PRODUCT_PACKAGES += \
     make_ext4fs
 
 $(call inherit-product-if-exists, vendor/toshiba/betelgeuse/device-vendor.mk)
-$(call inherit-product, frameworks/base/build/tablet-dalvik-heap.mk)
+$(call inherit-product, frameworks/base/build/phone-hdpi-512-dalvik-heap.mk)
 $(call inherit-product-if-exists, hardware/AR6kSDK.3.0/host/device-ath6k.mk)
 
