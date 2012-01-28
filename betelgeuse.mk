@@ -30,6 +30,7 @@ PRODUCT_COPY_FILES += \
     device/toshiba/betelgeuse/ueventd.betelgeuse.rc:root/ueventd.betelgeuse.rc \
     device/toshiba/betelgeuse/media_profiles.xml:system/etc/media_profiles.xml \
     device/toshiba/betelgeuse/egalax_i2c.idc:system/usr/idc/egalax_i2c.idc \
+    device/toshiba/betelgeuse/egalax_ts.idc:system/usr/idc/egalax_ts.idc \
     frameworks/base/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
     frameworks/base/data/etc/android.hardware.camera.front.xml:system/etc/permissions/android.hardware.camera.front.xml \
     frameworks/base/data/etc/android.hardware.camera.xml:system/etc/permissions/android.hardware.camera.xml \
