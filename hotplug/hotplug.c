@@ -1,7 +1,13 @@
 /*
  * Simple hotplug tool
  *
- * by Chih-Wei Huang <cwhuang@linux.org.tw>  2009/08/03
+ * Copyright (C) 2009 The Android-x86 Open Source Project
+ *
+ * Author: Chih-Wei Huang <cwhuang@linux.org.tw>
+ *
+ * Licensed under the Apache License, Version 2.0.
+ *
+ * Last updated: 2009/11/14
  *
  */
 
@@ -14,6 +20,8 @@
 
 #define HOTPLUG_LOG	"/data/hotplug.log"
 #define FIRMWARE_PATH	"/system/lib/firmware"
+
+extern char** environ;
 
 static int load_firmware()
 {
@@ -46,8 +54,7 @@ static int load_firmware()
 				goto clean3;
 			}
 	}
-	if (write(loading_fd, "0", 1) == 1)
-		ret = 0;
+	ret = !(write(loading_fd, "0", 1) == 1);
 
   clean3:
 	close(data_fd);
@@ -70,8 +77,14 @@ int main(int argc, char **argv)
 		FILE *log;
 		if ((log = fopen(HOTPLUG_LOG, "a"))) {
 			int i;
+			char **e = environ;
 			for (i = 0; i < argc; ++i)
 				fprintf(log, "%s ", argv[i]);
+			fputc('\n', log);
+			while (*e) {
+				fprintf(log, "%s\n", *e);
+				e++;
+			}
 			fputc('\n', log);
 			fclose(log);
 		}
