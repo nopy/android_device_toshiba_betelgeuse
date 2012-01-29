@@ -30,7 +30,7 @@ TARGET_NO_RADIOIMAGE := true
 BOARD_USE_USB_MASS_STORAGE_SWITCH := true
 
 # custom recovery ui
-#BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/toshiba/folio100/recovery/recovery_ui.c
+BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/toshiba/betelgeuse/recovery/recovery_ui.c
 
 # Wifi related defines
 #BOARD_WPA_SUPPLICANT_DRIVER := WEXT
