@@ -20,6 +20,10 @@
 #include "common.h"
 #include "extendedcommands.h"
 
+int device_toggle_display(volatile char* key_pressed, int key_code) {
+	return 0;
+}
+
 int device_handle_key(int key_code, int visible) {
     if (visible) {
         switch (key_code) {
