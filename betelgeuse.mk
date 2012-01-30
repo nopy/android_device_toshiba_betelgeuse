@@ -69,6 +69,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi/ath6k/AR6003/hw2.0/athtcmd_ram.bin:/system/wifi/ath6k/AR6003/hw2.0/athtcmd_ram.bin \
     $(LOCAL_PATH)/wifi/ath6k/AR6003/hw2.0/bdata.SD31.bin:/system/wifi/ath6k/AR6003/hw2.0/bdata.SD31.bin \
     $(LOCAL_PATH)/wifi/ath6k/AR6003/hw2.0/bdata.WB31.bin:/system/wifi/ath6k/AR6003/hw2.0/bdata.WB31.bin \
+    $(LOCAL_PATH)/init.gprs-pppd:/system/etc/init.gprs-pppd
 
 PRODUCT_PACKAGES := \
     make_ext4fs \
