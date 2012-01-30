@@ -174,6 +174,12 @@ service netdump-service /system/xbin/tcpdump -i any -C 5 -p -s 0 -w /sdcard/netd
     user root
     disabled
 
+service pppd_gprs /system/etc/init.gprs-pppd
+    user root
+    group radio cache inet misc
+    disabled
+    oneshot
+
 on property:net.netdump.enable=1
     start netdump-service
 
