@@ -103,4 +103,3 @@ etc/firmware/nvrm_avp.bin
 etc/firmware/nvrm_avp_e0000000.bin
 etc/firmware/nvrm_avp_eff00000.bin
 etc/firmware/transport_stress.axf
-lib/libhuawei-ril.so

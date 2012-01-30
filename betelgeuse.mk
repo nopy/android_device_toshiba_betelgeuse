@@ -109,7 +109,8 @@ PRODUCT_PACKAGES += \
     tinyplay \
     tinycap \
     tinymix \
-    sensors.tegra
+    sensors.tegra \
+    huaweigeneric-ril
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \
