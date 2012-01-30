@@ -110,7 +110,7 @@ PRODUCT_PACKAGES += \
     tinycap \
     tinymix \
     sensors.tegra \
-    huaweigeneric-ril
+    libhuaweigeneric-ril
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \
