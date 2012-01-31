@@ -80,9 +80,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
     wifi.interface=wlan0 \
     keyguard.no_require_sim=true \
     ro.telephony.ril.v3=icccardstatus,datacall,signalstrength \
-    hwui.render_dirty_regions=false \
-    rild.libpath=/system/lib/libhuaweigeneric-ril.so \
-    rild.libargs=-d /dev/ttyUSB2 \
+    hwui.render_dirty_regions=false
 
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
