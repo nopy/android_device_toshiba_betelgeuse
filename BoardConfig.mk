@@ -33,18 +33,11 @@ BOARD_USE_USB_MASS_STORAGE_SWITCH := true
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/toshiba/betelgeuse/recovery/recovery_ui.c
 
 # Wifi related defines
-#BOARD_WPA_SUPPLICANT_DRIVER := WEXT
+CONFIG_DRIVER_AR6000 := true
 BOARD_WPA_SUPPLICANT_DRIVER := AR6000
-#BOARD_WPA_SUPPLICANT_DRIVER := ATHEROS
 WPA_SUPPLICANT_VERSION      := VER_0_6_X
-#BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_wext
-#BOARD_HOSTAPD_DRIVER := WEXT
-#BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_wext
-# Let us use a fake driver as ar6000 may not be unloaded - it wont work afterwards
-#WIFI_DRIVER_MODULE_PATH     := rfkill
 WIFI_DRIVER_MODULE_NAME     := ar6000
-#WIFI_DRIVER_MODULE_PATH     := "/system/wifi/usbtest.ko"
-#WIFI_DRIVER_MODULE_NAME     := "usbtest"
+BOARD_WEXT_NO_COMBO_SCAN	:= true
 
 
 BOARD_HAVE_BLUETOOTH := true
