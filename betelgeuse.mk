@@ -92,6 +92,8 @@ ADDITIONAL_DEFAULT_PROPERTIES += persist.sys.strictmode.visual=0
 
 PRODUCT_CHARACTERISTICS := tablet
 
+PRODUCT_AAPT_CONFIG := xlarge mdpi
+
 DEVICE_PACKAGE_OVERLAYS := \
     device/toshiba/betelgeuse/overlay
 
