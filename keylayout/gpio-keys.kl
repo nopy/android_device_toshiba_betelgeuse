@@ -1,0 +1,5 @@
+key 139   MENU              WAKE
+key 102   HOME              WAKE
+key 158   BACK              WAKE
+key 61    CALL              WAKE
+key 62    ENDCALL           WAKE
