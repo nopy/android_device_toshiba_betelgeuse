@@ -94,7 +94,8 @@ PRODUCT_PROPERTY_OVERRIDES := \
     wifi.interface=wlan0 \
     keyguard.no_require_sim=true \
     ro.telephony.ril.v3=icccardstatus,datacall,signalstrength \
-    hwui.render_dirty_regions=false
+    hwui.render_dirty_regions=false \
+    ro.sf.lcd_density=120
 
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
