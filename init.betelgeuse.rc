@@ -99,7 +99,7 @@ on property:ro.dinfo.radio=3G
 
 
 service wpa_supplicant /system/bin/wpa_supplicant \
-    -Dar6000 -iwlan0 -c/data/misc/wifi/wpa_supplicant.conf
+    -Dnl80211 -iwlan0 -c/data/misc/wifi/wpa_supplicant.conf
 #   we will start as root and wpa_supplicant will switch to user wifi
 #   after setting up the capabilities required for WEXT
 #   user wifi
