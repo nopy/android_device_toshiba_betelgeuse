@@ -15,7 +15,6 @@ on fs
     mount ext4 /dev/block/mmcblk0p5 /data wait noatime
     mount ext4 /dev/block/mmcblk0p2 /cache wait noatime
     mkdir /flexrom 0770 root system
-    insmod /system/wifi/ar6000.ko
     import /init.betelgeuse.usb.rc
 
 on post-fs-data
