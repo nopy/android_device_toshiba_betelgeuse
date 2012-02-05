@@ -69,57 +69,36 @@ static void wpa_driver_wext_set_scan_timeout(void *priv)
  */
 int wpa_driver_wext_combo_scan(void *priv, struct wpa_driver_scan_params *params)
 {
-	char buf[WEXT_CSCAN_BUF_LEN];
 	struct wpa_driver_wext_data *drv = priv;
 	struct iwreq iwr;
-	int ret, bp;
-	unsigned i;
-	struct wpa_supplicant *wpa_s = (struct wpa_supplicant *)(drv->ctx);
+	int ret = 0, timeout;
+	struct iw_scan_req req;
+	const u8 *ssid = params->ssids[0].ssid;
+	size_t ssid_len = params->ssids[0].ssid_len;
 
-	if (!drv->driver_is_started) {
-		wpa_printf(MSG_DEBUG, "%s: Driver stopped", __func__);
-		return 0;
+	if (ssid_len > IW_ESSID_MAX_SIZE) {
+		wpa_printf(MSG_DEBUG, "%s: too long SSID (%lu)",
+			   __FUNCTION__, (unsigned long) ssid_len);
+		return -1;
 	}
-
-	wpa_printf(MSG_DEBUG, "%s: Start", __func__);
-
-	/* Set list of SSIDs */
-	bp = WEXT_CSCAN_HEADER_SIZE;
-	os_memcpy(buf, WEXT_CSCAN_HEADER, bp);
-	for(i=0; i < params->num_ssids; i++) {
-		if ((bp + IW_ESSID_MAX_SIZE + 10) >= (int)sizeof(buf))
-			break;
-		wpa_printf(MSG_DEBUG, "For Scan: %s", params->ssids[i].ssid);
-		buf[bp++] = WEXT_CSCAN_SSID_SECTION;
-		buf[bp++] = params->ssids[i].ssid_len;
-		os_memcpy(&buf[bp], params->ssids[i].ssid, params->ssids[i].ssid_len);
-		bp += params->ssids[i].ssid_len;
-	}
-
-	/* Set list of channels */
-	buf[bp++] = WEXT_CSCAN_CHANNEL_SECTION;
-	buf[bp++] = 0;
-
-	/* Set passive dwell time (default is 250) */
-	buf[bp++] = WEXT_CSCAN_PASV_DWELL_SECTION;
-	buf[bp++] = (u8)WEXT_CSCAN_PASV_DWELL_TIME;
-	buf[bp++] = (u8)(WEXT_CSCAN_PASV_DWELL_TIME >> 8);
-
-	/* Set home dwell time (default is 40) */
-	buf[bp++] = WEXT_CSCAN_HOME_DWELL_SECTION;
-	buf[bp++] = (u8)WEXT_CSCAN_HOME_DWELL_TIME;
-	buf[bp++] = (u8)(WEXT_CSCAN_HOME_DWELL_TIME >> 8);
 
 	os_memset(&iwr, 0, sizeof(iwr));
-	os_strncpy(iwr.ifr_name, drv->ifname, IFNAMSIZ);
-	iwr.u.data.pointer = buf;
-	iwr.u.data.length = bp;
+	os_strlcpy(iwr.ifr_name, drv->ifname, IFNAMSIZ);
 
-	if ((ret = ioctl(drv->ioctl_sock, SIOCSIWPRIV, &iwr)) < 0) {
-		if (!drv->bgscan_enabled)
-			wpa_printf(MSG_ERROR, "ioctl[SIOCSIWPRIV] (cscan): %d", ret);
-		else
-			ret = 0;	/* Hide error in case of bg scan */
+	if (ssid && ssid_len) {
+		os_memset(&req, 0, sizeof(req));
+		req.essid_len = ssid_len;
+		req.bssid.sa_family = ARPHRD_ETHER;
+		os_memset(req.bssid.sa_data, 0xff, ETH_ALEN);
+		os_memcpy(req.essid, ssid, ssid_len);
+		iwr.u.data.pointer = (caddr_t) &req;
+		iwr.u.data.length = sizeof(req);
+		iwr.u.data.flags = IW_SCAN_THIS_ESSID;
+	}
+
+	if (ioctl(drv->ioctl_sock, SIOCSIWSCAN, &iwr) < 0) {
+		perror("ioctl[SIOCSIWSCAN]");
+		ret = -1;
 	}
 	return ret;
 }
