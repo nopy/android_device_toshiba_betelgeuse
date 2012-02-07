@@ -267,6 +267,48 @@ int wpa_driver_wext_driver_cmd( void *priv, char *cmd, char *buf, size_t buf_len
 		return -1;
 	}
 
+	if (os_strcmp(cmd, "RSSI")==0 || os_strcasecmp(cmd, "RSSI-APPROX") == 0) {
+		int rssi = 255;
+		struct iwreq iwr;
+		struct iw_statistics stats;
+		os_memset(&iwr, 0, sizeof(iwr));
+		os_memset(&stats, 0, sizeof(stats));
+		os_strncpy(iwr.ifr_name, drv->ifname, IFNAMSIZ);
+		iwr.u.data.pointer = (caddr_t) &stats;
+		iwr.u.data.length = sizeof(struct iw_statistics);
+		iwr.u.data.flags = 1;             /* Clear updated flag */
+		if (ioctl(drv->ioctl_sock, SIOCGIWSTATS, &iwr) >= 0) {
+			rssi = stats.qual.qual;
+		}
+		if (rssi == 255)
+			rssi = -200;
+		else
+			rssi += (161 - 256);
+		return os_snprintf(buf, buf_len, "SSID rssi %d\n", rssi);
+	} else if (os_strcmp(cmd, "LINKSPEED")==0) {
+		struct iwreq iwr;
+		os_memset(&iwr, 0, sizeof(iwr));
+		os_strncpy(iwr.ifr_name, drv->ifname, IFNAMSIZ);
+		if (ioctl(drv->ioctl_sock, SIOCGIWRATE, &iwr) == 0) {
+			unsigned int speed_kbps = iwr.u.param.value / 1000000;
+			if ((!iwr.u.param.fixed)) {
+				return os_snprintf(buf, buf_len, "LinkSpeed %u\n", speed_kbps);
+			}
+		}
+		return -1;
+	} else if (os_strcmp(cmd, "MACADDR")==0) {
+		// reply comes back in the form "Macaddr = XX.XX.XX.XX.XX.XX" where XX
+		struct ifreq ifr;
+		os_memset(&ifr, 0, sizeof(ifr));
+		os_strncpy(ifr.ifr_name, drv->ifname, IFNAMSIZ);
+		if(ioctl(drv->ioctl_sock, SIOCGIFHWADDR, &ifr)==0) {
+			char *mac = ifr.ifr_hwaddr.sa_data;
+			return os_snprintf(buf, buf_len, "Macaddr = %02X:%02X:%02X:%02X:%02X:%02X\n",
+						mac[0], mac[1], mac[2],
+						mac[3], mac[4], mac[5]);
+		}
+	}
+	
 	if (os_strcasecmp(cmd, "RSSI-APPROX") == 0) {
 		os_strncpy(cmd, RSSI_CMD, MAX_DRV_CMD_SIZE);
 	} else if( os_strncasecmp(cmd, "SCAN-CHANNELS", 13) == 0 ) {
