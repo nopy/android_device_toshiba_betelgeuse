@@ -15,7 +15,12 @@ on fs
     mount ext4 /dev/block/mmcblk0p5 /data wait noatime
     mount ext4 /dev/block/mmcblk0p2 /cache wait noatime
     mkdir /flexrom 0770 root system
-    insmod /system/lib/modules/ath6kl.ko
+    #insmod /system/lib/modules/ath6kl.ko
+    insmod /system/wifi/compat.ko
+    insmod /system/wifi/cfg80211.ko
+    insmod /system/wifi/mac80211.ko
+    insmod /system/wifi/ath.ko
+    insmod /system/wifi/ath6kl.ko suspend_cutpower=1
     import /init.betelgeuse.usb.rc
 
 on post-fs-data
