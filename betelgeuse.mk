@@ -112,6 +112,13 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi2/ar3k/ramps_0x01020200_26.dfu:/system/etc/firmware/ar3k/ramps_0x01020200_26.dfu \
     $(LOCAL_PATH)/wifi2/ar3k/AthrBT_0x01020001.dfu:/system/etc/firmware/ar3k/AthrBT_0x01020001.dfu
 
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/wifi3/ath6kl.ko:/system/wifi/ath6kl.ko \
+    $(LOCAL_PATH)/wifi3/ath.ko:/system/wifi/ath.ko \
+    $(LOCAL_PATH)/wifi3/cfg80211.ko:/system/wifi/cfg80211.ko \
+    $(LOCAL_PATH)/wifi3/compat.ko:/system/wifi/compat.ko \
+    $(LOCAL_PATH)/wifi3/mac80211.ko:/system/wifi/mac80211.ko
+
 PRODUCT_PACKAGES := \
     make_ext4fs \
     com.android.future.usb.accessory
