@@ -20,7 +20,6 @@ on fs
     insmod /system/wifi/cfg80211.ko
     insmod /system/wifi/mac80211.ko
     insmod /system/wifi/ath.ko
-    insmod /system/wifi/ath6kl.ko suspend_cutpower=1
     import /init.betelgeuse.usb.rc
 
 on post-fs-data
@@ -41,6 +40,8 @@ on post-fs-data
     setprop sys.usb.config adb
 
 on boot
+    # Wifi
+    insmod /system/wifi/ath6kl.ko suspend_cutpower=1
 # bluetooth
     # UART device
     chmod 0660 /dev/ttyHS2
