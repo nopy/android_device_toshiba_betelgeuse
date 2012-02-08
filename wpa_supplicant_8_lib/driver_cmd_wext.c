@@ -253,6 +253,28 @@ static int wpa_driver_set_backgroundscan_params(void *priv)
 
 }
 
+typedef enum {
+        POWER_MODE_AUTO,
+        POWER_MODE_ACTIVE
+} POWER_MODE;
+
+static int wpa_driver_ath6k_pwr_mode(struct wpa_driver_wext_data *drv, int mode)
+{
+	struct iwreq iwr;
+	os_memset(&iwr, 0, sizeof(iwr));
+	os_strncpy(iwr.ifr_name, drv->ifname, IFNAMSIZ);
+	if (mode == POWER_MODE_AUTO)
+		iwr.u.power.disabled = 0;
+	else if (mode == POWER_MODE_ACTIVE)
+		iwr.u.power.disabled = 1;
+	else
+		return -1;
+	if (ioctl(drv->ioctl_sock, SIOCSIWPOWER, &iwr) < 0) {
+		wpa_printf(MSG_DEBUG, "drv_wext: failed to control power\n");
+	}
+	return 0;
+}
+
 int wpa_driver_wext_driver_cmd( void *priv, char *cmd, char *buf, size_t buf_len )
 {
 	struct wpa_driver_wext_data *drv = priv;
@@ -307,6 +329,18 @@ int wpa_driver_wext_driver_cmd( void *priv, char *cmd, char *buf, size_t buf_len
 						mac[0], mac[1], mac[2],
 						mac[3], mac[4], mac[5]);
 		}
+	} else if (os_strcmp(cmd, "SCAN-ACTIVE")==0) {
+		return 0; /* unsupport function */
+	} else if (os_strcmp(cmd, "SCAN-PASSIVE")==0) {
+		return 0; /* unsupport function */
+	} else if (os_strcmp(cmd, "SETSUSPENDOPT")==0) {
+		return 0; /* unsupport function */
+	} else if (os_strncmp(cmd, "POWERMODE ", 10)==0) {
+		int mode;
+		if (sscanf(cmd, "%*s %d", &mode) == 1) {
+			return wpa_driver_ath6k_pwr_mode(drv, mode);
+		}
+		return -1;
 	}
 	
 	if (os_strcasecmp(cmd, "RSSI-APPROX") == 0) {
