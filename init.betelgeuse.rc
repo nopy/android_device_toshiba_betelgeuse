@@ -1,3 +1,5 @@
+import init.nv_dev_board.usb.rc
+
 on early-init
     mount debugfs debugfs /sys/kernel/debug
 
@@ -20,7 +22,6 @@ on fs
     insmod /system/wifi/cfg80211.ko
     insmod /system/wifi/mac80211.ko
     insmod /system/wifi/ath.ko
-    import /init.betelgeuse.usb.rc
 
 on post-fs-data
     mkdir /data/misc/wifi 0770 wifi wifi
@@ -34,10 +35,6 @@ on post-fs-data
 
     # Set indication (checked by vold) that we have finished this action
     setprop vold.post_fs_data_done 1
-
-    chmod 0660 /dev/usb_mtp_gadget
-    chown system system /dev/usb_mtp_gadget
-    setprop sys.usb.config adb
 
 on boot
     # Wifi
@@ -91,19 +88,7 @@ on boot
     write /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq 1000000
     write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor interactive
     write /sys/devices/system/cpu/cpufreq/interactive/go_maxspeed_load 80
-
-# WIFI SKU GPS (BCM)
-on property:ro.dinfo.radio=Wifi
-    write /sys/class/gpio/export 203
-    write /sys/class/gpio/gpio203/value 0
-    write /sys/class/gpio/gpio203/direction out
-
-
-# FOR Ericsson GPS
-on property:ro.dinfo.radio=3G
-    chmod 666 /dev/bus/usb/002/049
-    chown root root /dev/bus/usb/002/049
-
+    write /sys/module/cpuidle/parameters/lp2_in_idle 1
 
 service wpa_supplicant /system/bin/wpa_supplicant \
     -Dwext -iwlan0 -c/data/misc/wifi/wpa_supplicant.conf
