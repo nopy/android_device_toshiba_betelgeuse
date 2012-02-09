@@ -26,7 +26,7 @@ endif
 
 PRODUCT_COPY_FILES += \
     device/toshiba/betelgeuse/init.betelgeuse.rc:root/init.betelgeuse.rc \
-    device/toshiba/betelgeuse/init.betelgeuse.usb.rc:root/init.betelgeuse.usb.rc \
+    device/toshiba/betelgeuse/init.nv_dev_board.usb.rc:root/init.nv_dev_board.usb.rc \
     device/toshiba/betelgeuse/ueventd.betelgeuse.rc:root/ueventd.betelgeuse.rc \
     device/toshiba/betelgeuse/media_profiles.xml:system/etc/media_profiles.xml \
     device/toshiba/betelgeuse/egalax_i2c.idc:system/usr/idc/egalax_i2c.idc \
