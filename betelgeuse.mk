@@ -123,23 +123,23 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/asound.conf:/system/etc/asound.conf \
     $(LOCAL_PATH)/audio.primary.tegra.so:/system/lib/hw/audio.primary.tegra.so \
     $(LOCAL_PATH)/libasound.so:/system/lib/libasound.so \
-    $(LOCAL_PATH)/alsa/alsa.conf:/system/alsa/alsa.conf \
-    $(LOCAL_PATH)/alsa/cards/aliases.conf:/system/alsa/cards/aliases.conf \
-    $(LOCAL_PATH)/alsa/pcm/modem.conf:/system/alsa/pcm/modem.conf \
-    $(LOCAL_PATH)/alsa/pcm/iec958.conf:/system/alsa/pcm/iec958.conf \
-    $(LOCAL_PATH)/alsa/pcm/dpl.conf:/system/alsa/pcm/dpl.conf \
-    $(LOCAL_PATH)/alsa/pcm/surround50.conf:/system/alsa/pcm/surround50.conf \
-    $(LOCAL_PATH)/alsa/pcm/center_lfe.conf:/system/alsa/pcm/center_lfe.conf \
-    $(LOCAL_PATH)/alsa/pcm/surround51.conf:/system/alsa/pcm/surround51.conf \
-    $(LOCAL_PATH)/alsa/pcm/dsnoop.conf:/system/alsa/pcm/dsnoop.conf \
-    $(LOCAL_PATH)/alsa/pcm/side.conf:/system/alsa/pcm/side.conf \
-    $(LOCAL_PATH)/alsa/pcm/dmix.conf:/system/alsa/pcm/dmix.conf \
-    $(LOCAL_PATH)/alsa/pcm/default.conf:/system/alsa/pcm/default.conf \
-    $(LOCAL_PATH)/alsa/pcm/surround40.conf:/system/alsa/pcm/surround40.conf \
-    $(LOCAL_PATH)/alsa/pcm/surround41.conf:/system/alsa/pcm/surround41.conf \
-    $(LOCAL_PATH)/alsa/pcm/front.conf:/system/alsa/pcm/front.conf \
-    $(LOCAL_PATH)/alsa/pcm/rear.conf:/system/alsa/pcm/rear.conf \
-    $(LOCAL_PATH)/alsa/pcm/surround71.conf:/system/alsa/pcm/surround71.conf
+    $(LOCAL_PATH)/alsa/alsa.conf:/system/usr/share/alsa/alsa.conf \
+    $(LOCAL_PATH)/alsa/cards/aliases.conf:/system/usr/share/alsa/cards/aliases.conf \
+    $(LOCAL_PATH)/alsa/pcm/modem.conf:/system/usr/share/alsa/pcm/modem.conf \
+    $(LOCAL_PATH)/alsa/pcm/iec958.conf:/system/usr/share/alsa/pcm/iec958.conf \
+    $(LOCAL_PATH)/alsa/pcm/dpl.conf:/system/usr/share/alsa/pcm/dpl.conf \
+    $(LOCAL_PATH)/alsa/pcm/surround50.conf:/system/usr/share/alsa/pcm/surround50.conf \
+    $(LOCAL_PATH)/alsa/pcm/center_lfe.conf:/system/usr/share/alsa/pcm/center_lfe.conf \
+    $(LOCAL_PATH)/alsa/pcm/surround51.conf:/system/usr/share/alsa/pcm/surround51.conf \
+    $(LOCAL_PATH)/alsa/pcm/dsnoop.conf:/system/usr/share/alsa/pcm/dsnoop.conf \
+    $(LOCAL_PATH)/alsa/pcm/side.conf:/system/usr/share/alsa/pcm/side.conf \
+    $(LOCAL_PATH)/alsa/pcm/dmix.conf:/system/usr/share/alsa/pcm/dmix.conf \
+    $(LOCAL_PATH)/alsa/pcm/default.conf:/system/usr/share/alsa/pcm/default.conf \
+    $(LOCAL_PATH)/alsa/pcm/surround40.conf:/system/usr/share/alsa/pcm/surround40.conf \
+    $(LOCAL_PATH)/alsa/pcm/surround41.conf:/system/usr/share/alsa/pcm/surround41.conf \
+    $(LOCAL_PATH)/alsa/pcm/front.conf:/system/usr/share/alsa/pcm/front.conf \
+    $(LOCAL_PATH)/alsa/pcm/rear.conf:/system/usr/share/alsa/pcm/rear.conf \
+    $(LOCAL_PATH)/alsa/pcm/surround71.conf:/system/usr/share/alsa/pcm/surround71.conf
 
 PRODUCT_PACKAGES := \
     make_ext4fs \
