@@ -12,7 +12,9 @@ on early-init
     symlink /mnt/sdcard /sdcard
 
 on fs
-    mount ext4 /dev/block/mmcblk0p1 /system wait ro
+    mount ext4 /dev/block/mmcblk0p1 /system wait rw
+    chmod 4755 /system/bin/pppd
+    mount ext4 /dev/block/mmcblk0p1 /system wait ro remount
     setprop ro.crypto.tmpfs_options size=128m,mode=0771,uid=1000,gid=1000
     mount ext4 /dev/block/mmcblk0p5 /data wait noatime
     mount ext4 /dev/block/mmcblk0p2 /cache wait noatime
