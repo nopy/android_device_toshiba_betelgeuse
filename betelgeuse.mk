@@ -112,13 +112,6 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi2/ar3k/AthrBT_0x01020001.dfu:/system/etc/firmware/ar3k/AthrBT_0x01020001.dfu
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/wifi3/ath6kl.ko:/system/wifi/ath6kl.ko \
-    $(LOCAL_PATH)/wifi3/ath.ko:/system/wifi/ath.ko \
-    $(LOCAL_PATH)/wifi3/cfg80211.ko:/system/wifi/cfg80211.ko \
-    $(LOCAL_PATH)/wifi3/compat.ko:/system/wifi/compat.ko \
-    $(LOCAL_PATH)/wifi3/mac80211.ko:/system/wifi/mac80211.ko
-
-PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/asound.conf:/system/etc/asound.conf \
     $(LOCAL_PATH)/audio.primary.tegra.so:/system/lib/hw/audio.primary.tegra.so \
     $(LOCAL_PATH)/libasound.so:/system/lib/libasound.so \
