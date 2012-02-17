@@ -111,6 +111,11 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi2/ar3k/ramps_0x01020200_26.dfu:/system/etc/firmware/ar3k/ramps_0x01020200_26.dfu \
     $(LOCAL_PATH)/wifi2/ar3k/AthrBT_0x01020001.dfu:/system/etc/firmware/ar3k/AthrBT_0x01020001.dfu
 
+# Some files for 3G
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/ppp/ip-up:/system/etc/ppp/ip-up \
+    $(LOCAL_PATH)/ppp/ip-down:/system/etc/ppp/ip-down
+
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/asound.conf:/system/etc/asound.conf \
     $(LOCAL_PATH)/audio.primary.tegra.so:/system/lib/hw/audio.primary.tegra.so \
