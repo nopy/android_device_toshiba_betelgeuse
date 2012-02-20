@@ -118,7 +118,6 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/asound.conf:/system/etc/asound.conf \
-    $(LOCAL_PATH)/audio.primary.tegra.so:/system/lib/hw/audio.primary.tegra.so \
     $(LOCAL_PATH)/libasound.so:/system/lib/libasound.so \
     $(LOCAL_PATH)/alsa/alsa.conf:/system/usr/share/alsa/alsa.conf \
     $(LOCAL_PATH)/alsa/cards/aliases.conf:/system/usr/share/alsa/cards/aliases.conf \
@@ -178,7 +177,8 @@ PRODUCT_PACKAGES += \
     tinycap \
     tinymix \
     sensors.tegra \
-    libhuaweigeneric-ril
+    libhuaweigeneric-ril \
+    audio.primary.tegra
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \
