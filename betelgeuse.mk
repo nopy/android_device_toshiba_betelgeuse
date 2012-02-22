@@ -139,7 +139,8 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_PACKAGES := \
     make_ext4fs \
-    com.android.future.usb.accessory
+    com.android.future.usb.accessory \
+    hwprops
 
 PRODUCT_PROPERTY_OVERRIDES := \
     ro.opengles.version=131072 \
