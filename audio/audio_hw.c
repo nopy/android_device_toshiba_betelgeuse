@@ -369,7 +369,7 @@ static int start_output_stream(struct adam_stream_out *out)
 
     adev->active_output = out;
 
-	/* If outputting to HDMI, redirect audio to it */
+    /* If outputting to HDMI, redirect audio to it */
     out->config.rate = MM_FULL_POWER_SAMPLING_RATE;
     if(adev->devices & AUDIO_DEVICE_OUT_AUX_DIGITAL) {
         port = PORT_SPDIF;
@@ -381,9 +381,9 @@ static int start_output_stream(struct adam_stream_out *out)
     out->write_threshold = PLAYBACK_LONG_PERIOD_COUNT * LONG_PERIOD_SIZE;
     out->config.start_threshold = SHORT_PERIOD_SIZE * 2;
     out->config.avail_min = LONG_PERIOD_SIZE;
-	out->low_power = 1;
+    out->low_power = 1;
 
-	LOGD("start_output_stream: card:%d, port:%d, rate:%d",card,port,out->config.rate);
+    LOGD("start_output_stream: card:%d, port:%d, rate:%d",card,port,out->config.rate);
 	
     out->pcm = pcm_open(card, port, PCM_OUT | PCM_MMAP | PCM_NOIRQ, &out->config);
 
