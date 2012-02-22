@@ -172,11 +172,11 @@ struct route_setting defaults[] = {
     },
     {
 	.ctl_name = MIXER_MICL_CAPTURE_MUX,
-	.intval = 1,
+	.strval = "Right",
     },
     {
 	.ctl_name = MIXER_MICL_CAPTURE_MUX,
-	.intval = 1,
+	.strval = "Right",
     },
     {
         .ctl_name = NULL,
@@ -366,6 +366,7 @@ static int start_output_stream(struct adam_stream_out *out)
     struct adam_audio_device *adev = out->dev;
     unsigned int card = CARD_SND;
     unsigned int port = PORT_MM;
+    int bt_on;
 
     adev->active_output = out;
 
@@ -382,6 +383,12 @@ static int start_output_stream(struct adam_stream_out *out)
     out->config.start_threshold = SHORT_PERIOD_SIZE * 2;
     out->config.avail_min = LONG_PERIOD_SIZE;
     out->low_power = 1;
+
+    bt_on = adev->devices & AUDIO_DEVICE_OUT_ALL_SCO;
+    if (bt_on) {
+	LOGD("Using BT SCO");
+	port = PORT_VOICE;
+    }
 
     LOGD("start_output_stream: card:%d, port:%d, rate:%d",card,port,out->config.rate);
 	
@@ -628,7 +635,7 @@ static int out_set_parameters(struct audio_stream *stream, const char *kvpairs)
     char value[32];
     int ret, val = 0;
 
-	LOGD("out_set_parameters: kvpairs:%s\n",kvpairs);
+    LOGD("out_set_parameters: kvpairs:%s\n", kvpairs);
 	
     parms = str_parms_create_str(kvpairs);
 
@@ -652,10 +659,11 @@ static int out_set_parameters(struct audio_stream *stream, const char *kvpairs)
 			mixer_ctl_set_value(adev->mixer_ctls.headset_switch, 0,
 				(val & AUDIO_DEVICE_OUT_WIRED_HEADPHONE) ? 1 : 0);
 				
-			LOGD("Headphone out:%c, Speaker out:%c, HDMI out:%c\n",
+			LOGD("Headphone out:%c, Speaker out:%c, HDMI out:%c, BT SCO: %c\n",
 				(val & AUDIO_DEVICE_OUT_WIRED_HEADPHONE) ? 'Y' : 'N',
 				(val & AUDIO_DEVICE_OUT_SPEAKER) ? 'Y' : 'N',
-				(val & AUDIO_DEVICE_OUT_AUX_DIGITAL) ? 'Y' : 'N'
+				(val & AUDIO_DEVICE_OUT_AUX_DIGITAL) ? 'Y' : 'N',
+				(val & AUDIO_DEVICE_OUT_ALL_SCO) ? 'Y' : 'N'
 				);
 				
             adev->devices &= ~AUDIO_DEVICE_OUT_ALL;
@@ -1794,14 +1802,18 @@ static int adev_close(hw_device_t *device)
 static uint32_t adev_get_supported_devices(const struct audio_hw_device *dev)
 {
 	LOGD("adev_get_supported_devices");
-    return (/* OUT */
-            AUDIO_DEVICE_OUT_SPEAKER |
-            AUDIO_DEVICE_OUT_WIRED_HEADPHONE |
-            AUDIO_DEVICE_OUT_AUX_DIGITAL |
-            AUDIO_DEVICE_OUT_DEFAULT |
-            /* IN */
-            AUDIO_DEVICE_IN_BUILTIN_MIC |
-            AUDIO_DEVICE_IN_DEFAULT);
+	return (
+		/* OUT */
+		AUDIO_DEVICE_OUT_SPEAKER |
+		AUDIO_DEVICE_OUT_WIRED_HEADPHONE |
+		AUDIO_DEVICE_OUT_AUX_DIGITAL |
+		AUDIO_DEVICE_OUT_ALL_SCO |
+		AUDIO_DEVICE_OUT_DEFAULT |
+		/* IN */
+		AUDIO_DEVICE_IN_BUILTIN_MIC |
+		AUDIO_DEVICE_IN_ALL_SCO |
+		AUDIO_DEVICE_IN_DEFAULT
+	);
 }
 
 static int adev_open(const hw_module_t* module, const char* name,

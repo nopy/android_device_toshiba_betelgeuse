@@ -178,7 +178,8 @@ PRODUCT_PACKAGES += \
     tinymix \
     sensors.tegra \
     libhuaweigeneric-ril \
-    audio.primary.tegra
+    audio.primary.tegra \
+    audio.a2dp.default
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \
