@@ -38,15 +38,24 @@
 #include <hardware/audio_effect.h>
 #include <audio_effects/effect_aec.h>
 
-#define MIXER_SPEAKER_PLAYBACK_VOLUME		"Line Out Volume" // OK
-#define MIXER_SPEAKER_PLAYBACK_SWITCH		"Int Spk Switch" // OK
+#define MIXER_PCM_PLAYBACK_VOLUME     		"Digital Playback Volume"
+#define MIXER_PCM_CAPTURE_VOLUME		"Digital Capture Volume"
 
-#define MIXER_HEADSET_PLAYBACK_VOLUME		"Headphone Volume" // OK
-#define MIXER_HEADSET_OUTENABLE			"Headphone Switch" // OK
-#define MIXER_HEADSET_PLAYBACK_SWITCH		"Headphone ZC Switch" // Not sure
+#define MIXER_SPEAKER_PLAYBACK_VOLUME		"Line Out Volume"
+#define MIXER_SPEAKER_PLAYBACK_SWITCH		"Int Spk Switch"
+
+#define MIXER_HEADSET_PLAYBACK_VOLUME		"Headphone Volume"
+#define MIXER_HEADSET_PLAYBACK_SWITCH		"Headphone Switch"
+
+#define MIXER_MICL_CAPTURE_VOLUME		"Left Input PGA Volume"
+#define MIXER_MICR_CAPTURE_VOLUME		"Right Input PGA Volume"
+#define MIXER_MICL_CAPTURE_SWITCH		"Left Input PGA Switch"
+#define MIXER_MICR_CAPTURE_SWITCH		"Right Input PGA Switch"
+#define MIXER_MICL_CAPTURE_MUX			"Left Capture Mux"
+#define MIXER_MICR_CAPTURE_MUX			"Right Capture Mux"
 
 /* ALSA card */
-#define CARD_ADAM 0
+#define CARD_SND 0
 
 /* ALSA ports for card0 */
 #define PORT_MM    0 /* CODEC port */
@@ -89,10 +98,11 @@
 #define MM_FULL_POWER_SAMPLING_RATE 48000
 
 /* conversions from Percent to codec gains */
-#define PERC_TO_PCM_VOLUME(x)     ( (int)((x) * 31 )) 
-#define PERC_TO_CAPTURE_VOLUME(x) ( (int)((x) * 31 )) 
-#define PERC_TO_HEADSET_VOLUME(x) ( (int)((x) * 31 )) 
-#define PERC_TO_SPEAKER_VOLUME(x) ( (int)((x) * 31 )) 
+#define PERC_TO_PCM_VOLUME(x)     ( (int)((x) * 120 ))
+#define PERC_TO_CAPTURE_VOLUME(x) ( (int)((x) * 120 ))
+#define PERC_TO_MIC_VOLUME(x) ( (int)((x) * 31 ))
+#define PERC_TO_HEADSET_VOLUME(x) ( (int)((x) * 63 ))
+#define PERC_TO_SPEAKER_VOLUME(x) ( (int)((x) * 63 ))
 
 struct pcm_config pcm_config_mm_out = {
     .channels = 2,
@@ -121,25 +131,52 @@ struct route_setting
 struct route_setting defaults[] = {
     /* general */
     {
-        .ctl_name = MIXER_HEADSET_PLAYBACK_VOLUME,
-        //.intval = PERC_TO_HEADSET_VOLUME(1),
-	.intval = 63,
+        .ctl_name = MIXER_PCM_PLAYBACK_VOLUME,
+        .intval = PERC_TO_PCM_VOLUME(0.8),
+    },
+    {
+	.ctl_name = MIXER_PCM_CAPTURE_VOLUME,
+	.intval = PERC_TO_CAPTURE_VOLUME(0.8),
     },
     {
         .ctl_name = MIXER_SPEAKER_PLAYBACK_VOLUME,
-        .intval = 63,
+        .intval = PERC_TO_SPEAKER_VOLUME(1),
     },
     {
-        .ctl_name = MIXER_HEADSET_PLAYBACK_SWITCH,
-        .intval = 0,
+	.ctl_name = MIXER_SPEAKER_PLAYBACK_SWITCH,
+	.intval = 1,
     },
     {
-        .ctl_name = MIXER_SPEAKER_PLAYBACK_SWITCH,
+        .ctl_name = MIXER_HEADSET_PLAYBACK_VOLUME,
+        .intval = PERC_TO_HEADSET_VOLUME(1),
+    },
+    {
+	.ctl_name = MIXER_HEADSET_PLAYBACK_SWITCH,
         .intval = 1,
     },
     {
-	.ctl_name = MIXER_HEADSET_OUTENABLE,
-        .intval = 1,
+	.ctl_name = MIXER_MICL_CAPTURE_VOLUME,
+	.intval = PERC_TO_MIC_VOLUME(1),
+    },
+    {
+	.ctl_name = MIXER_MICR_CAPTURE_VOLUME,
+	.intval = PERC_TO_MIC_VOLUME(1),
+    },
+    {
+	.ctl_name = MIXER_MICL_CAPTURE_SWITCH,
+	.intval = 1,
+    },
+    {
+	.ctl_name = MIXER_MICR_CAPTURE_SWITCH,
+	.intval = 1,
+    },
+    {
+	.ctl_name = MIXER_MICL_CAPTURE_MUX,
+	.strval = "Right",
+    },
+    {
+	.ctl_name = MIXER_MICL_CAPTURE_MUX,
+	.strval = "Right",
     },
     {
         .ctl_name = NULL,
@@ -150,20 +187,18 @@ struct route_setting defaults[] = {
 
 struct mixer_ctls
 {
-	
 	struct mixer_ctl *pcm_volume;
-    struct mixer_ctl *headset_volume;
-    struct mixer_ctl *speaker_volume;
-	struct mixer_ctl *mic_volume;
-    struct mixer_ctl *headset_switch;
-    struct mixer_ctl *speaker_switch;
-	struct mixer_ctl *mic_switch;
-    struct mixer_ctl *LHPMux;
-    struct mixer_ctl *RHPMux;
-    struct mixer_ctl *SpkMux;
-    struct mixer_ctl *HPEnDAC;
-    struct mixer_ctl *SpkEnDAC;
-
+	struct mixer_ctl *pcm_cap_volume;
+	struct mixer_ctl *speaker_volume;
+	struct mixer_ctl *speaker_switch;
+	struct mixer_ctl *headset_volume;
+	struct mixer_ctl *headset_switch;
+	struct mixer_ctl *micl_volume;
+	struct mixer_ctl *micr_volume;
+	struct mixer_ctl *micl_switch;
+	struct mixer_ctl *micr_switch;
+	struct mixer_ctl *micl_mux;
+	struct mixer_ctl *micr_mux;
 };
 
 struct adam_audio_device {
@@ -329,12 +364,13 @@ static void select_mode(struct adam_audio_device *adev)
 static int start_output_stream(struct adam_stream_out *out)
 {
     struct adam_audio_device *adev = out->dev;
-    unsigned int card = CARD_ADAM;
+    unsigned int card = CARD_SND;
     unsigned int port = PORT_MM;
+    int bt_on;
 
     adev->active_output = out;
 
-	/* If outputting to HDMI, redirect audio to it */
+    /* If outputting to HDMI, redirect audio to it */
     out->config.rate = MM_FULL_POWER_SAMPLING_RATE;
     if(adev->devices & AUDIO_DEVICE_OUT_AUX_DIGITAL) {
         port = PORT_SPDIF;
@@ -346,9 +382,15 @@ static int start_output_stream(struct adam_stream_out *out)
     out->write_threshold = PLAYBACK_LONG_PERIOD_COUNT * LONG_PERIOD_SIZE;
     out->config.start_threshold = SHORT_PERIOD_SIZE * 2;
     out->config.avail_min = LONG_PERIOD_SIZE;
-	out->low_power = 1;
+    out->low_power = 1;
 
-	LOGD("start_output_stream: card:%d, port:%d, rate:%d",card,port,out->config.rate);
+    bt_on = adev->devices & AUDIO_DEVICE_OUT_ALL_SCO;
+    if (bt_on) {
+	LOGD("Using BT SCO");
+	port = PORT_VOICE;
+    }
+
+    LOGD("start_output_stream: card:%d, port:%d, rate:%d",card,port,out->config.rate);
 	
     out->pcm = pcm_open(card, port, PCM_OUT | PCM_MMAP | PCM_NOIRQ, &out->config);
 
@@ -593,7 +635,7 @@ static int out_set_parameters(struct audio_stream *stream, const char *kvpairs)
     char value[32];
     int ret, val = 0;
 
-	LOGD("out_set_parameters: kvpairs:%s\n",kvpairs);
+    LOGD("out_set_parameters: kvpairs:%s\n", kvpairs);
 	
     parms = str_parms_create_str(kvpairs);
 
@@ -617,10 +659,11 @@ static int out_set_parameters(struct audio_stream *stream, const char *kvpairs)
 			mixer_ctl_set_value(adev->mixer_ctls.headset_switch, 0,
 				(val & AUDIO_DEVICE_OUT_WIRED_HEADPHONE) ? 1 : 0);
 				
-			LOGD("Headphone out:%c, Speaker out:%c, HDMI out:%c\n",
+			LOGD("Headphone out:%c, Speaker out:%c, HDMI out:%c, BT SCO: %c\n",
 				(val & AUDIO_DEVICE_OUT_WIRED_HEADPHONE) ? 'Y' : 'N',
 				(val & AUDIO_DEVICE_OUT_SPEAKER) ? 'Y' : 'N',
-				(val & AUDIO_DEVICE_OUT_AUX_DIGITAL) ? 'Y' : 'N'
+				(val & AUDIO_DEVICE_OUT_AUX_DIGITAL) ? 'Y' : 'N',
+				(val & AUDIO_DEVICE_OUT_ALL_SCO) ? 'Y' : 'N'
 				);
 				
             adev->devices &= ~AUDIO_DEVICE_OUT_ALL;
@@ -812,7 +855,7 @@ static int start_input_stream(struct adam_stream_in *in)
                                         in->requested_rate);
 
     /* this assumes routing is done previously */
-    in->pcm = pcm_open(0, PORT_MM, PCM_IN, &in->config);
+    in->pcm = pcm_open(CARD_SND, PORT_MM, PCM_IN, &in->config);
     if (!pcm_is_ready(in->pcm)) {
         LOGE("cannot open pcm_in driver: %s", pcm_get_error(in->pcm));
         pcm_close(in->pcm);
@@ -982,10 +1025,8 @@ static int in_set_gain(struct audio_stream_in *stream, float gain)
 	unsigned int channel;
 	
     for (channel = 0; channel < 2; channel++) {
-        mixer_ctl_set_value(adev->mixer_ctls.mic_volume, channel,
-            PERC_TO_CAPTURE_VOLUME(gain));
-        mixer_ctl_set_value(adev->mixer_ctls.mic_volume, channel,
-            PERC_TO_CAPTURE_VOLUME(gain));
+        mixer_ctl_set_value(adev->mixer_ctls.micl_volume, channel, PERC_TO_CAPTURE_VOLUME(gain));
+        mixer_ctl_set_value(adev->mixer_ctls.micr_volume, channel, PERC_TO_CAPTURE_VOLUME(gain));
     }
 
     return 0;
@@ -1608,7 +1649,8 @@ static int adev_set_mic_mute(struct audio_hw_device *dev, bool state)
     adev->mic_mute = state;
 
 	/* Disable mic if requested */
-	mixer_ctl_set_value(adev->mixer_ctls.mic_switch, 0,	state ? 0 : 1);
+	mixer_ctl_set_value(adev->mixer_ctls.micl_switch, 0, state ? 0 : 1);
+	mixer_ctl_set_value(adev->mixer_ctls.micr_switch, 0, state ? 0 : 1);
 	
     return 0;
 }
@@ -1647,7 +1689,8 @@ static int adev_open_input_stream(struct audio_hw_device *dev, uint32_t devices,
     struct adam_audio_device *ladev = (struct adam_audio_device *)dev;
     struct adam_stream_in *in;
     int ret;
-    int channel_count = popcount(*channel_mask);
+    //int channel_count = popcount(*channel_mask);
+    int channel_count = 2;
 
 	LOGD("adev_open_input_stream: channel_count:%d", channel_count);
 	
@@ -1759,14 +1802,18 @@ static int adev_close(hw_device_t *device)
 static uint32_t adev_get_supported_devices(const struct audio_hw_device *dev)
 {
 	LOGD("adev_get_supported_devices");
-    return (/* OUT */
-            AUDIO_DEVICE_OUT_SPEAKER |
-            AUDIO_DEVICE_OUT_WIRED_HEADPHONE |
-            AUDIO_DEVICE_OUT_AUX_DIGITAL |
-            AUDIO_DEVICE_OUT_DEFAULT |
-            /* IN */
-            AUDIO_DEVICE_IN_BUILTIN_MIC |
-            AUDIO_DEVICE_IN_DEFAULT);
+	return (
+		/* OUT */
+		AUDIO_DEVICE_OUT_SPEAKER |
+		AUDIO_DEVICE_OUT_WIRED_HEADPHONE |
+		AUDIO_DEVICE_OUT_AUX_DIGITAL |
+		AUDIO_DEVICE_OUT_ALL_SCO |
+		AUDIO_DEVICE_OUT_DEFAULT |
+		/* IN */
+		AUDIO_DEVICE_IN_BUILTIN_MIC |
+		AUDIO_DEVICE_IN_ALL_SCO |
+		AUDIO_DEVICE_IN_DEFAULT
+	);
 }
 
 static int adev_open(const hw_module_t* module, const char* name,
@@ -1805,53 +1852,96 @@ static int adev_open(const hw_module_t* module, const char* name,
     adev->hw_device.close_input_stream = adev_close_input_stream;
     adev->hw_device.dump = adev_dump;
 
-    adev->mixer = mixer_open(0);
-    if (!adev->mixer) {
-        free(adev);
-        LOGE("Unable to open the mixer, aborting.");
-        return -EINVAL;
-    }
+	adev->mixer = mixer_open(0);
+	if (!adev->mixer) {
+		free(adev);
+		LOGE("Unable to open the mixer, aborting.");
+		return -EINVAL;
+	}
 
-    adev->mixer_ctls.headset_volume = mixer_get_ctl_by_name(adev->mixer,
-                                           MIXER_HEADSET_PLAYBACK_VOLUME);
+	adev->mixer_ctls.pcm_volume = mixer_get_ctl_by_name(adev->mixer, MIXER_PCM_PLAYBACK_VOLUME);
+	if (!adev->mixer_ctls.pcm_volume) {
+		LOGE("Unable to find '%s' mixer control", MIXER_PCM_PLAYBACK_VOLUME);
+		goto error_out;
+	}
+
+	adev->mixer_ctls.pcm_cap_volume = mixer_get_ctl_by_name(adev->mixer, MIXER_PCM_CAPTURE_VOLUME);
+	if (!adev->mixer_ctls.pcm_cap_volume) {
+		LOGE("Unable to find '%s' mixer control", MIXER_PCM_CAPTURE_VOLUME);
+		goto error_out;
+	}
+
+	adev->mixer_ctls.speaker_volume = mixer_get_ctl_by_name(adev->mixer, MIXER_SPEAKER_PLAYBACK_VOLUME);
+	if (!adev->mixer_ctls.speaker_volume) {
+		LOGE("Unable to find '%s' mixer control", MIXER_SPEAKER_PLAYBACK_VOLUME);
+		goto error_out;
+	}
+
+	adev->mixer_ctls.speaker_switch = mixer_get_ctl_by_name(adev->mixer, MIXER_SPEAKER_PLAYBACK_SWITCH);
+	if (!adev->mixer_ctls.speaker_switch) {
+		LOGE("Unable to find '%s' mixer control", MIXER_SPEAKER_PLAYBACK_SWITCH);
+		goto error_out;
+	}
+
+	adev->mixer_ctls.headset_volume = mixer_get_ctl_by_name(adev->mixer, MIXER_HEADSET_PLAYBACK_VOLUME);
 	if (!adev->mixer_ctls.headset_volume) { 
-		LOGE("Unable to find '%s' mixer control",MIXER_HEADSET_PLAYBACK_VOLUME);
-		goto error_out;
-	}
-										   
-    adev->mixer_ctls.speaker_volume = mixer_get_ctl_by_name(adev->mixer,
-                                           MIXER_SPEAKER_PLAYBACK_VOLUME);
-	if (!adev->mixer_ctls.speaker_volume) { 
-		LOGE("Unable to find '%s' mixer control",MIXER_SPEAKER_PLAYBACK_VOLUME);
+		LOGE("Unable to find '%s' mixer control", MIXER_HEADSET_PLAYBACK_VOLUME);
 		goto error_out;
 	}
 
-    adev->mixer_ctls.headset_switch = mixer_get_ctl_by_name(adev->mixer,
-                                           MIXER_HEADSET_PLAYBACK_SWITCH);
-	if (!adev->mixer_ctls.headset_switch) { 
-		LOGE("Unable to find '%s' mixer control",MIXER_HEADSET_PLAYBACK_SWITCH);
-		goto error_out;
-	}
-										   
-    adev->mixer_ctls.speaker_switch = mixer_get_ctl_by_name(adev->mixer,
-                                           MIXER_SPEAKER_PLAYBACK_SWITCH);
-	if (!adev->mixer_ctls.speaker_switch) { 
-		LOGE("Unable to find '%s' mixer control",MIXER_SPEAKER_PLAYBACK_SWITCH);
+	adev->mixer_ctls.headset_switch = mixer_get_ctl_by_name(adev->mixer, MIXER_HEADSET_PLAYBACK_SWITCH);
+	if (!adev->mixer_ctls.headset_switch) {
+		LOGE("Unable to find '%s' mixer control", MIXER_HEADSET_PLAYBACK_SWITCH);
 		goto error_out;
 	}
 
+	adev->mixer_ctls.micl_volume = mixer_get_ctl_by_name(adev->mixer, MIXER_MICL_CAPTURE_VOLUME);
+		if (!adev->mixer_ctls.micl_volume) {
+		LOGE("Unable to find '%s' mixer control", MIXER_MICL_CAPTURE_VOLUME);
+		goto error_out;
+	}
 
-    /* Set the default route before the PCM stream is opened */
-    pthread_mutex_lock(&adev->lock);
-    set_route_by_array(adev->mixer, defaults, 1);
-    adev->mode = AUDIO_MODE_NORMAL;
-    adev->devices = AUDIO_DEVICE_OUT_SPEAKER | AUDIO_DEVICE_IN_BUILTIN_MIC;
+	adev->mixer_ctls.micr_volume = mixer_get_ctl_by_name(adev->mixer, MIXER_MICR_CAPTURE_VOLUME);
+		if (!adev->mixer_ctls.micr_volume) {
+		LOGE("Unable to find '%s' mixer control", MIXER_MICR_CAPTURE_VOLUME);
+		goto error_out;
+	}
 
-    pthread_mutex_unlock(&adev->lock);
+	adev->mixer_ctls.micl_switch = mixer_get_ctl_by_name(adev->mixer, MIXER_MICL_CAPTURE_SWITCH);
+		if (!adev->mixer_ctls.micl_switch) {
+		LOGE("Unable to find '%s' mixer control", MIXER_MICL_CAPTURE_SWITCH);
+		goto error_out;
+	}
 
-    *device = &adev->hw_device.common;
+	adev->mixer_ctls.micr_switch = mixer_get_ctl_by_name(adev->mixer, MIXER_MICR_CAPTURE_SWITCH);
+		if (!adev->mixer_ctls.micr_switch) {
+		LOGE("Unable to find '%s' mixer control", MIXER_MICR_CAPTURE_SWITCH);
+		goto error_out;
+	}
 
-    return 0;
+	adev->mixer_ctls.micl_mux = mixer_get_ctl_by_name(adev->mixer, MIXER_MICL_CAPTURE_MUX);
+		if (!adev->mixer_ctls.micl_mux) {
+		LOGE("Unable to find '%s' mixer control", MIXER_MICL_CAPTURE_MUX);
+		goto error_out;
+	}
+
+	adev->mixer_ctls.micr_mux = mixer_get_ctl_by_name(adev->mixer, MIXER_MICR_CAPTURE_MUX);
+		if (!adev->mixer_ctls.micr_mux) {
+		LOGE("Unable to find '%s' mixer control", MIXER_MICR_CAPTURE_MUX);
+		goto error_out;
+	}
+
+	/* Set the default route before the PCM stream is opened */
+	pthread_mutex_lock(&adev->lock);
+	set_route_by_array(adev->mixer, defaults, 1);
+	adev->mode = AUDIO_MODE_NORMAL;
+	adev->devices = AUDIO_DEVICE_OUT_SPEAKER | AUDIO_DEVICE_IN_BUILTIN_MIC;
+
+	pthread_mutex_unlock(&adev->lock);
+
+	*device = &adev->hw_device.common;
+
+	return 0;
 
 error_out:	
 
