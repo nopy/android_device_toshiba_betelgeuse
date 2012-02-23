@@ -180,7 +180,8 @@ PRODUCT_PACKAGES += \
     sensors.tegra \
     libhuaweigeneric-ril \
     audio.primary.tegra \
-    audio.a2dp.default
+    audio.a2dp.default \
+    FolioParts
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \
