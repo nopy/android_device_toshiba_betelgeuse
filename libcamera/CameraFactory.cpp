@@ -120,7 +120,7 @@ int CameraFactory::getCameraInfo(int camera_id, struct camera_info* info)
 	
 
 	LOGD("CameraFactory::getCameraInfo: about to fetch info");
-    return CameraHardware::getCameraInfo(info);
+    return CameraHardware::getCameraInfo(camera_id, info);
 }
 
 /****************************************************************************

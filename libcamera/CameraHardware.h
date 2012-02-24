@@ -212,7 +212,7 @@ public:
      * NOTE: When this method is called the object is locked.
      * Note that failures in this method are reported as negave EXXX statuses.
      */
-    static status_t getCameraInfo(struct camera_info* info);
+    static status_t getCameraInfo(int camera_id, struct camera_info* info);
 	
 private:
 

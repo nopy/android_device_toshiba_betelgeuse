@@ -315,12 +315,17 @@ status_t CameraHardware::closeCamera()
     return NO_ERROR;
 }
 
-status_t CameraHardware::getCameraInfo(struct camera_info* info)
+status_t CameraHardware::getCameraInfo(int camera_id, struct camera_info* info)
 {
     LOGD("CameraHardware::getCameraInfo");
 
-    info->facing = CAMERA_FACING_FRONT;
-    info->orientation = 0;
+    if (camera_id == 0) {
+	info->facing = CAMERA_FACING_FRONT;
+	info->orientation = 0;
+    } else {
+	info->facing = CAMERA_FACING_BACK;
+	info->orientation = 0;
+    }
 
     return NO_ERROR;
 }
