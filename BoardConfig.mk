@@ -1,6 +1,5 @@
 # Camera Setup
 USE_CAMERA_STUB := false
-BOARD_FIRST_CAMERA_FRONT_FACING := true
 
 # inherit from the proprietary version
 -include vendor/toshiba/betelgeuse/BoardConfigVendor.mk
