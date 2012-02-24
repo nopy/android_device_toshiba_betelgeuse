@@ -32,7 +32,6 @@ extern "C" {
 #include "CameraHardware.h"
 #include "Converter.h"
 
-#define VIDEO_DEVICE	"/dev/video0"
 #define MIN_WIDTH  		320
 #define MIN_HEIGHT 		240
 
@@ -111,6 +110,8 @@ extern "C" {
 
 namespace android {
 
+char videodevice[64];
+
 bool CameraHardware::PowerOn()
 {
 	LOGD("CameraHardware::PowerOn: Power ON camera.");
@@ -129,7 +130,7 @@ bool CameraHardware::PowerOn()
 	int timeOut = 500;
 	do {
 		// Try to open the video capture device
-		handle = ::open(VIDEO_DEVICE,O_RDWR);
+		handle = ::open(videodevice,O_RDWR);
 		if (handle >= 0)
 			break;
 		// Wait a bit
@@ -163,7 +164,7 @@ bool CameraHardware::PowerOff()
 	return true;
 }
 
-CameraHardware::CameraHardware(const hw_module_t* module)
+CameraHardware::CameraHardware(const hw_module_t* module, const char* videodev)
         :
 		mWin(0),	
 		mPreviewWinFmt(PIXEL_FORMAT_UNKNOWN),
@@ -208,6 +209,7 @@ CameraHardware::CameraHardware(const hw_module_t* module)
     /*
      * Initialize camera_device descriptor for this object.
      */
+    strncpy(videodevice, videodev, sizeof(videodevice));
 
     /* Common header */
     common.tag = HARDWARE_DEVICE_TAG;
@@ -472,7 +474,7 @@ status_t CameraHardware::startPreviewLocked()
 	
     LOGD("CameraHardware::startPreviewLocked: Open, %dx%d", width, height);
 
-    status_t ret = camera.Open(VIDEO_DEVICE);
+    status_t ret = camera.Open(videodevice);
 	if (ret != NO_ERROR) {
 		LOGE("Failed to initialize Camera");
 		return ret;
@@ -809,7 +811,7 @@ void CameraHardware::initDefaultParameters()
 	SortedVector<SurfaceSize> avSizes;
 	SortedVector<int> avFps;
 	
-    if (camera.Open(VIDEO_DEVICE) != NO_ERROR) {
+    if (camera.Open(videodevice) != NO_ERROR) {
 	    LOGE("cannot open device.");
 
     } else {
@@ -1663,7 +1665,7 @@ int CameraHardware::pictureThread()
 
 		LOGD("CameraHardware::pictureThread: taking picture (%d x %d)", w, h);
 
-		if (camera.Open(VIDEO_DEVICE) == NO_ERROR) {
+		if (camera.Open(videodevice) == NO_ERROR) {
 			camera.Init(w, h, 1);
 			
 			/* Retrieve the real size being used */

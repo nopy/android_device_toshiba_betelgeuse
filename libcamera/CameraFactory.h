@@ -99,6 +99,7 @@ private:
 
     /* Camera hardware */
     CameraHardware* mCamera;
+    CameraHardware* sCamera;
 
 public:
     /* Contains device open entry point, as required by HAL API. */

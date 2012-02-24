@@ -23,6 +23,8 @@
 #define LOG_TAG "Camera_Factory"
 #include <cutils/log.h>
 #include <cutils/properties.h>
+#include <fcntl.h>
+#include <sys/mman.h>
 #include "CameraFactory.h"
 
 extern camera_module_t HAL_MODULE_INFO_SYM;
@@ -35,7 +37,7 @@ android::CameraFactory  gCameraFactory;
 namespace android {
 
 CameraFactory::CameraFactory()
-        : mCamera(NULL)
+        : mCamera(NULL), sCamera(NULL)
 {
 	LOGD("CameraFactory::CameraFactory");
 }
@@ -46,6 +48,11 @@ CameraFactory::~CameraFactory()
     if (mCamera != NULL) {
         delete mCamera;
 		mCamera = NULL;
+    }
+
+    if (sCamera != NULL) {
+	delete sCamera;
+		sCamera = NULL;
     }
 }
 
@@ -68,17 +75,35 @@ int CameraFactory::cameraDeviceOpen(const hw_module_t* module,int camera_id, hw_
              __FUNCTION__, camera_id, getCameraNum());
         return -EINVAL;
     }
-	
-	if (!mCamera)
-		mCamera = new CameraHardware(module);	
 
-    return mCamera->connectCamera(device);
+    if (camera_id==0) {
+	if (!mCamera)
+		mCamera = new CameraHardware(module, "/dev/video0");
+
+	    return mCamera->connectCamera(device);
+    } else {
+		if (!sCamera)
+			sCamera = new CameraHardware(module, "/dev/video1");
+
+	    return sCamera->connectCamera(device);
+    }
+
+    return 0;
 }
 
 /* Returns the number of available cameras */
 int CameraFactory::getCameraNum()
 {
 	LOGD("CameraFactory::getCameraNum");
+
+	int handle = ::open("/dev/video1", O_RDONLY);
+	if (handle >= 0) {
+		::close(handle);
+		LOGI("Using 2 cameras!");
+		return 2;
+        }
+
+	LOGI("Using 1 camera!");
 	return 1;
 }
 

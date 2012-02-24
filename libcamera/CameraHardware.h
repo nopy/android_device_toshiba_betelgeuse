@@ -182,7 +182,7 @@ public:
      *      instance in camera factory's array.
      *  module - Emulated camera HAL module descriptor.
      */
-    CameraHardware(const hw_module_t* module);
+    CameraHardware(const hw_module_t* module, const char* videodev);
 
     /* Destructs EmulatedCamera instance. */
     virtual ~CameraHardware();
