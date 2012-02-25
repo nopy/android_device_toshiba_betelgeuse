@@ -209,6 +209,7 @@ CameraHardware::CameraHardware(const hw_module_t* module, const char* videodev)
     /*
      * Initialize camera_device descriptor for this object.
      */
+    LOGI("Using camera %s", videodev);
     strncpy(videodevice, videodev, sizeof(videodevice));
 
     /* Common header */
@@ -320,10 +321,10 @@ status_t CameraHardware::getCameraInfo(int camera_id, struct camera_info* info)
     LOGD("CameraHardware::getCameraInfo");
 
     if (camera_id == 0) {
-	info->facing = CAMERA_FACING_FRONT;
+	info->facing = CAMERA_FACING_BACK;
 	info->orientation = 0;
     } else {
-	info->facing = CAMERA_FACING_BACK;
+	info->facing = CAMERA_FACING_FRONT;
 	info->orientation = 0;
     }
 

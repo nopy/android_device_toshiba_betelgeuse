@@ -76,16 +76,31 @@ int CameraFactory::cameraDeviceOpen(const hw_module_t* module,int camera_id, hw_
         return -EINVAL;
     }
 
+    /* Lets destroy the main cam so we can use a new /dev/videoX */
+    if (mCamera != NULL) {
+        delete mCamera;
+                mCamera = NULL;
+    }
+
     if (camera_id==0) {
-	if (!mCamera)
-		mCamera = new CameraHardware(module, "/dev/video0");
+	if (!mCamera) {
+		int handle = ::open("/dev/video1", O_RDONLY);
+		if (handle >= 0) {
+			::close(handle);
+			LOGI("Using 2 cameras!");
+			mCamera = new CameraHardware(module, "/dev/video1");
+		} else {
+			LOGI("Using 1 camera!");
+			mCamera = new CameraHardware(module, "/dev/video0");
+		}
+	}
 
-	    return mCamera->connectCamera(device);
+	return mCamera->connectCamera(device);
     } else {
-		if (!sCamera)
-			sCamera = new CameraHardware(module, "/dev/video1");
+	if (!sCamera)
+		sCamera = new CameraHardware(module, "/dev/video0");
 
-	    return sCamera->connectCamera(device);
+	return sCamera->connectCamera(device);
     }
 
     return 0;
@@ -96,15 +111,7 @@ int CameraFactory::getCameraNum()
 {
 	LOGD("CameraFactory::getCameraNum");
 
-	int handle = ::open("/dev/video1", O_RDONLY);
-	if (handle >= 0) {
-		::close(handle);
-		LOGI("Using 2 cameras!");
-		return 2;
-        }
-
-	LOGI("Using 1 camera!");
-	return 1;
+	return 2;
 }
 
 
