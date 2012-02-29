@@ -27,15 +27,13 @@
 #define DEGREES_TO_RADIANS (M_PI/180.0)
 
 /* Magnetometer defines */
-#define LSM303DLH_M_RANGE_4_0G "4"
-#define LSM303DLH_M_MODE_CONTINUOUS "0"
-#define LSM303DLH_M_MODE_SLEEP "3"
-#define LSM303DLH_M_RATE_15_00 "4"
 #define SENSOR_UX500_G_To_uT (100.0f)
 #define SENSOR_UX500_MAGNETOMETER_RANGE LSM303DLH_MAGNETOMETER_RANGE_1_9G
-#define GAIN_X 430
-#define GAIN_Y 430
-#define GAIN_Z 385
+#define AK8975_MODE_NORMAL "1"
+#define AK8975_MODE_OFF "0"
+#define GAIN_X -100
+#define GAIN_Y -100
+#define GAIN_Z -100
 
 #if (SENSOR_UX500_MAGNETOMETER_RANGE == LSM303DLH_MAGNETOMETER_RANGE_1_9G)
 #define SENSOR_UX500_MAGNETOMETER_MAX (1.9f * SENSOR_UX500_G_To_uT)
@@ -83,10 +81,6 @@
 /* magnetometer paths*/
 char const *const PATH_MODE_MAG =
 		"/sys/bus/i2c/drivers/mm_ak8975/0-000c/mode";
-char const *const PATH_RANGE_MAG =
-		"/sys/bus/i2c/drivers/mm_ak8975/0-000c";
-char const *const PATH_RATE_MAG =
-		"/sys/bus/i2c/drivers/mm_ak8975/0-000c/";
 char const *const PATH_DATA_MAG =
 		"/sys/bus/i2c/drivers/mm_ak8975/0-000c/show_flux";
 

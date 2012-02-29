@@ -154,10 +154,7 @@ LOGD("activate_mag(%d)", enable) ;
 	int ret = 0;
 	if (enable) {
 		if (count_mag == 0) {
-			ret = write_cmd(PATH_MODE_MAG, LSM303DLH_M_MODE_CONTINUOUS,
-					2);
-			//ret = write_cmd(PATH_RATE_MAG, LSM303DLH_M_RATE_15_00, 2);
-			//ret = write_cmd(PATH_RANGE_MAG, LSM303DLH_M_RANGE_4_0G, 2);
+			ret = write_cmd(PATH_MODE_MAG, AK8975_MODE_NORMAL, 2);
 
 			if (ret != -ENODEV)
 				count_mag++;
@@ -169,7 +166,7 @@ LOGD("activate_mag(%d)", enable) ;
 			return 0;
 		count_mag--;
 		if (count_orien == 0 && count_mag == 0)
-			write_cmd(PATH_MODE_MAG, LSM303DLH_M_MODE_SLEEP, 2);
+			write_cmd(PATH_MODE_MAG, AK8975_MODE_OFF, 2);
 	}
 	return ret;
 }
@@ -266,11 +263,7 @@ LOGD("activate_orientation(%d)", enable) ;
 	int ret = 0;
 	if (enable) {
 		if (count_orien == 0) {
-			ret = write_cmd(PATH_MODE_MAG, LSM303DLH_M_MODE_CONTINUOUS,
-					2);
-			//ret = write_cmd(PATH_RATE_MAG, LSM303DLH_M_RATE_15_00, 2);
-			//ret = write_cmd(PATH_RANGE_MAG, LSM303DLH_M_RANGE_4_0G, 2);
-
+			ret = write_cmd(PATH_MODE_MAG, AK8975_MODE_NORMAL, 2);
 			if (acc_id == 50) {
 				ret = write_cmd(PATH_MODE_ACC, LSM303DLH_A_MODE_NORMAL, 2);
 				ret = write_cmd(PATH_RATE_ACC, LSM303DLH_A_RATE_50, 2);
@@ -290,7 +283,7 @@ LOGD("activate_orientation(%d)", enable) ;
 			return 0;
 		count_orien--;
 		if (count_orien == 0 && count_acc == 0 && count_mag == 0) {
-			write_cmd(PATH_MODE_MAG, LSM303DLH_M_MODE_SLEEP, 2);
+			write_cmd(PATH_MODE_MAG, AK8975_MODE_OFF, 2);
 			write_cmd(PATH_MODE_ACC, LSM303DLH_A_MODE_OFF, 2);
 		}
 	}
@@ -352,9 +345,10 @@ static void poll_magnetometer(sensors_event_t *values)
 	lseek(fd, 0, SEEK_SET);
 	nread = read(fd, buf, SIZE_OF_BUF);
 
-	if (nread == sizeof(buf))
-		sscanf(buf, "%8x:%8x:%8x", &data[0], &data[1], &data[2]);
+	//if (nread == sizeof(buf))
+	sscanf(buf, "%d %d %d", &data[2], &data[1], &data[0]);
 
+	LOGD("poll_magnetometer: %i %i %i", data[0], data[1], data[2]);
 	values->magnetic.status = SENSOR_STATUS_ACCURACY_HIGH;
 	values->magnetic.x = (data[0] * 100) / GAIN_X;
 	values->magnetic.y = (data[1] * 100) / GAIN_Y;
