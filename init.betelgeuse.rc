@@ -22,6 +22,8 @@ on fs
     mount ext4 /dev/block/mmcblk0p2 /cache wait noatime
     mkdir /flexrom 0770 root system
     insmod /system/wifi/ar6000.ko
+    insmod /system/lib/modules/ntfs.ko
+    insmod /system/lib/modules/cifs.ko
 
 on post-fs-data
     mkdir /data/misc/wifi 0770 wifi wifi
