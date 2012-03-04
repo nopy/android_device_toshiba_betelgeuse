@@ -6,7 +6,7 @@ $(call inherit-product, vendor/cm/config/common_full_phone.mk)
 # Inherit some common CM stuff.
 $(call inherit-product, vendor/cm/config/gsm.mk)
 
-PRODUCT_BUILD_PROP_OVERRIDES += PRODUCT_MODEL=GT-P7510 PRODUCT_BRAND=samsung PRODUCT_MANUFACTURER=samsung PRODUCT_NAME=GT-P7510 TARGET_DEVICE=GT-P7510 BUILD_ID=HTJ85B BUILD_FINGERPRINT=samsung/GT-P7510/GT-P7510:3.2/HTJ85B/UEKMM:user/release-keys PRIVATE_BUILD_DESC="GT-P7510-user 3.2 HTJ85B UEKMM release-keys"
+PRODUCT_BUILD_PROP_OVERRIDES += PRODUCT_NAME=tervigon BUILD_ID=IML77 BUILD_DISPLAY_ID=IML77 BUILD_FINGERPRINT="motorola/tervigon/wingray:4.0.3/IML77/239789:user/release-keys" PRIVATE_BUILD_DESC="tervigon-user 4.0.3 IML77 239789 release-keys"
 
 PRODUCT_NAME := cm_betelgeuse
 PRODUCT_RELEASE_NAME := betelgeuse
