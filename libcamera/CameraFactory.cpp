@@ -37,7 +37,7 @@ android::CameraFactory  gCameraFactory;
 namespace android {
 
 CameraFactory::CameraFactory()
-        : mCamera(NULL), sCamera(NULL)
+        : mCamera(NULL)
 {
 	LOGD("CameraFactory::CameraFactory");
 }
@@ -48,11 +48,6 @@ CameraFactory::~CameraFactory()
     if (mCamera != NULL) {
         delete mCamera;
 		mCamera = NULL;
-    }
-
-    if (sCamera != NULL) {
-	delete sCamera;
-		sCamera = NULL;
     }
 }
 
@@ -66,44 +61,40 @@ CameraFactory::~CameraFactory()
 
 int CameraFactory::cameraDeviceOpen(const hw_module_t* module,int camera_id, hw_device_t** device)
 {
-    LOGD("CameraFactory::cameraDeviceOpen: id = %d", camera_id);
+	LOGD("CameraFactory::cameraDeviceOpen: id = %d", camera_id);
 
-    *device = NULL;
+	*device = NULL;
 
-    if (camera_id < 0 || camera_id >= getCameraNum()) {
-        LOGE("%s: Camera id %d is out of bounds (%d)",
-             __FUNCTION__, camera_id, getCameraNum());
-        return -EINVAL;
-    }
+	if (camera_id < 0 || camera_id >= getCameraNum()) {
+		LOGE("%s: Camera id %d is out of bounds (%d)",
+			__FUNCTION__, camera_id, getCameraNum());
+		return -EINVAL;
+	}
 
-    /* Lets destroy the main cam so we can use a new /dev/videoX */
-    if (mCamera != NULL) {
-        delete mCamera;
-                mCamera = NULL;
-    }
+	/* Lets destroy the cam so we can use a new /dev/videoX */
+	if (mCamera != NULL) {
+		delete mCamera;
+		mCamera = NULL;
+	}
 
-    if (camera_id==0) {
-	if (!mCamera) {
-		int handle = ::open("/dev/video1", O_RDONLY);
-		if (handle >= 0) {
-			::close(handle);
-			LOGI("Using 2 cameras!");
+	int handle = ::open("/dev/video1", O_RDONLY);
+	if (handle >= 0) {
+		::close(handle);
+		LOGI("Using 2 cameras!");
+		if (camera_id==0) {
+			LOGI("Returning /dev/video1");
 			mCamera = new CameraHardware(module, "/dev/video1");
 		} else {
-			LOGI("Using 1 camera!");
+			LOGI("Returning /dev/video0");
 			mCamera = new CameraHardware(module, "/dev/video0");
 		}
+	} else {
+		LOGI("Using 1 camera!");
+		LOGI("Returning /dev/video0");
+		mCamera = new CameraHardware(module, "/dev/video0");
 	}
 
 	return mCamera->connectCamera(device);
-    } else {
-	if (!sCamera)
-		sCamera = new CameraHardware(module, "/dev/video0");
-
-	return sCamera->connectCamera(device);
-    }
-
-    return 0;
 }
 
 /* Returns the number of available cameras */
