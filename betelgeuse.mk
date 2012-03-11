@@ -70,47 +70,47 @@ PRODUCT_COPY_FILES += \
 #    device/toshiba/betelgeuse/modules/scsi_wait_scan.ko:system/modules/scsi_wait_scan.ko \
 #    device/toshiba/betelgeuse/modules/bcm4329.ko:system/modules/bcm4329.ko 
 
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/wifi/dhcpcd.conf:system/etc/dhcpcd/dhcpcd.conf \
-    $(LOCAL_PATH)/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
-    $(LOCAL_PATH)/wifi/hostapd.conf:/etc/wifi/hostapd.conf \
-    $(LOCAL_PATH)/wifi/ar3k/30101/PS_ASIC.pst:/system/wifi/ar3k/30101/PS_ASIC.pst \
-    $(LOCAL_PATH)/wifi/ar3k/30101/RamPatch.txt:/system/wifi/ar3k/30101/RamPatch.txt \
-    $(LOCAL_PATH)/wifi/ar3k/30101coex/PS_ASIC.pst:/system/wifi/ar3k/30101coex/PS_ASIC.pst \
-    $(LOCAL_PATH)/wifi/ar3k/30101coex/RamPatch.txt:/system/wifi/ar3k/30101coex/RamPatch.txt \
-    $(LOCAL_PATH)/wifi/ath6k/AR6003/hw2.0/otp.bin.z77:/system/wifi/ath6k/AR6003/hw2.0/otp.bin.z77 \
-    $(LOCAL_PATH)/wifi/ath6k/AR6003/hw2.0/data.patch.bin:/system/wifi/ath6k/AR6003/hw2.0/data.patch.bin \
-    $(LOCAL_PATH)/wifi/ath6k/AR6003/hw2.0/athwlan.bin.z77:/system/wifi/ath6k/AR6003/hw2.0/athwlan.bin.z77 \
-    $(LOCAL_PATH)/wifi/ath6k/AR6003/hw2.0/athtcmd_ram.bin:/system/wifi/ath6k/AR6003/hw2.0/athtcmd_ram.bin \
-    $(LOCAL_PATH)/wifi/ath6k/AR6003/hw2.0/bdata.SD31.bin:/system/wifi/ath6k/AR6003/hw2.0/bdata.SD31.bin \
-    $(LOCAL_PATH)/wifi/ath6k/AR6003/hw2.0/bdata.WB31.bin:/system/wifi/ath6k/AR6003/hw2.0/bdata.WB31.bin
+#PRODUCT_COPY_FILES += \
+#    $(LOCAL_PATH)/wifi/dhcpcd.conf:system/etc/dhcpcd/dhcpcd.conf \
+#    $(LOCAL_PATH)/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
+#    $(LOCAL_PATH)/wifi/hostapd.conf:/etc/wifi/hostapd.conf \
+#    $(LOCAL_PATH)/wifi/ar3k/30101/PS_ASIC.pst:/system/wifi/ar3k/30101/PS_ASIC.pst \
+#    $(LOCAL_PATH)/wifi/ar3k/30101/RamPatch.txt:/system/wifi/ar3k/30101/RamPatch.txt \
+#    $(LOCAL_PATH)/wifi/ar3k/30101coex/PS_ASIC.pst:/system/wifi/ar3k/30101coex/PS_ASIC.pst \
+#    $(LOCAL_PATH)/wifi/ar3k/30101coex/RamPatch.txt:/system/wifi/ar3k/30101coex/RamPatch.txt \
+#    $(LOCAL_PATH)/wifi/ath6k/AR6003/hw2.0/otp.bin.z77:/system/wifi/ath6k/AR6003/hw2.0/otp.bin.z77 \
+#    $(LOCAL_PATH)/wifi/ath6k/AR6003/hw2.0/data.patch.bin:/system/wifi/ath6k/AR6003/hw2.0/data.patch.bin \
+#    $(LOCAL_PATH)/wifi/ath6k/AR6003/hw2.0/athwlan.bin.z77:/system/wifi/ath6k/AR6003/hw2.0/athwlan.bin.z77 \
+#    $(LOCAL_PATH)/wifi/ath6k/AR6003/hw2.0/athtcmd_ram.bin:/system/wifi/ath6k/AR6003/hw2.0/athtcmd_ram.bin \
+#    $(LOCAL_PATH)/wifi/ath6k/AR6003/hw2.0/bdata.SD31.bin:/system/wifi/ath6k/AR6003/hw2.0/bdata.SD31.bin \
+#    $(LOCAL_PATH)/wifi/ath6k/AR6003/hw2.0/bdata.WB31.bin:/system/wifi/ath6k/AR6003/hw2.0/bdata.WB31.bin
 
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/wifi2/ath6k/AR6003/hw2.0/athwlan.bin.z77:/system/etc/firmware/ath6k/AR6003/hw2.0/athwlan.bin.z77 \
-    $(LOCAL_PATH)/wifi2/ath6k/AR6003/hw2.0/bdata.WB31.bin:/system/etc/firmware/ath6k/AR6003/hw2.0/bdata.WB31.bin \
-    $(LOCAL_PATH)/wifi2/ath6k/AR6003/hw2.0/otp.bin.z77:/system/etc/firmware/ath6k/AR6003/hw2.0/otp.bin.z77 \
-    $(LOCAL_PATH)/wifi2/ath6k/AR6003/hw2.0/bdata.SD31.bin:/system/etc/firmware/ath6k/AR6003/hw2.0/bdata.SD31.bin \
-    $(LOCAL_PATH)/wifi2/ath6k/AR6003/hw2.0/data.patch.bin:/system/etc/firmware/ath6k/AR6003/hw2.0/data.patch.bin \
-    $(LOCAL_PATH)/wifi2/ath6k/AR6003/hw2.0/bdata.SD32.bin:/system/etc/firmware/ath6k/AR6003/hw2.0/bdata.SD32.bin \
-    $(LOCAL_PATH)/wifi2/ar3k/30101/ar3kbdaddr.pst:/system/etc/firmware/ar3k/30101/ar3kbdaddr.pst \
-    $(LOCAL_PATH)/wifi2/ar3k/30101/PS_ASIC.pst:/system/etc/firmware/ar3k/30101/PS_ASIC.pst \
-    $(LOCAL_PATH)/wifi2/ar3k/30101/RamPatch.txt:/system/etc/firmware/ar3k/30101/RamPatch.txt \
-    $(LOCAL_PATH)/wifi2/ar3k/ramps_0x01020200_40.dfu:/system/etc/firmware/ar3k/ramps_0x01020200_40.dfu \
-    $(LOCAL_PATH)/wifi2/ar3k/ramps_0x01020001_26.dfu:/system/etc/firmware/ar3k/ramps_0x01020001_26.dfu \
-    $(LOCAL_PATH)/wifi2/ar3k/AthrBT_0x01020200.dfu:/system/etc/firmware/ar3k/AthrBT_0x01020200.dfu \
-    $(LOCAL_PATH)/wifi2/ar3k/30000/ar3kbdaddr.pst:/system/etc/firmware/ar3k/30000/ar3kbdaddr.pst \
-    $(LOCAL_PATH)/wifi2/ar3k/30000/PS_ASIC.pst:/system/etc/firmware/ar3k/30000/PS_ASIC.pst \
-    $(LOCAL_PATH)/wifi2/ar3k/30000/RamPatch.txt:/system/etc/firmware/ar3k/30000/RamPatch.txt \
-    $(LOCAL_PATH)/wifi2/ar3k/1020200/ar3kbdaddr.pst:/system/etc/firmware/ar3k/1020200/ar3kbdaddr.pst \
-    $(LOCAL_PATH)/wifi2/ar3k/1020200/PS_ASIC.pst:/system/etc/firmware/ar3k/1020200/PS_ASIC.pst \
-    $(LOCAL_PATH)/wifi2/ar3k/1020200/RamPatch.txt:/system/etc/firmware/ar3k/1020200/RamPatch.txt \
-    $(LOCAL_PATH)/wifi2/ar3k/30101coex/ar3kbdaddr.pst:/system/etc/firmware/ar3k/30101coex/ar3kbdaddr.pst \
-    $(LOCAL_PATH)/wifi2/ar3k/30101coex/PS_ASIC.pst:/system/etc/firmware/ar3k/30101coex/PS_ASIC.pst \
-    $(LOCAL_PATH)/wifi2/ar3k/30101coex/PS_ASIC_aclLowPri.pst:/system/etc/firmware/ar3k/30101coex/PS_ASIC_aclLowPri.pst \
-    $(LOCAL_PATH)/wifi2/ar3k/30101coex/PS_ASIC_aclHighPri.pst:/system/etc/firmware/ar3k/30101coex/PS_ASIC_aclHighPri.pst \
-    $(LOCAL_PATH)/wifi2/ar3k/30101coex/RamPatch.txt:/system/etc/firmware/ar3k/30101coex/RamPatch.txt \
-    $(LOCAL_PATH)/wifi2/ar3k/ramps_0x01020200_26.dfu:/system/etc/firmware/ar3k/ramps_0x01020200_26.dfu \
-    $(LOCAL_PATH)/wifi2/ar3k/AthrBT_0x01020001.dfu:/system/etc/firmware/ar3k/AthrBT_0x01020001.dfu
+#PRODUCT_COPY_FILES += \
+#    $(LOCAL_PATH)/wifi2/ath6k/AR6003/hw2.0/athwlan.bin.z77:/system/etc/firmware/ath6k/AR6003/hw2.0/athwlan.bin.z77 \
+#    $(LOCAL_PATH)/wifi2/ath6k/AR6003/hw2.0/bdata.WB31.bin:/system/etc/firmware/ath6k/AR6003/hw2.0/bdata.WB31.bin \
+#    $(LOCAL_PATH)/wifi2/ath6k/AR6003/hw2.0/otp.bin.z77:/system/etc/firmware/ath6k/AR6003/hw2.0/otp.bin.z77 \
+#    $(LOCAL_PATH)/wifi2/ath6k/AR6003/hw2.0/bdata.SD31.bin:/system/etc/firmware/ath6k/AR6003/hw2.0/bdata.SD31.bin \
+#    $(LOCAL_PATH)/wifi2/ath6k/AR6003/hw2.0/data.patch.bin:/system/etc/firmware/ath6k/AR6003/hw2.0/data.patch.bin \
+#    $(LOCAL_PATH)/wifi2/ath6k/AR6003/hw2.0/bdata.SD32.bin:/system/etc/firmware/ath6k/AR6003/hw2.0/bdata.SD32.bin \
+#    $(LOCAL_PATH)/wifi2/ar3k/30101/ar3kbdaddr.pst:/system/etc/firmware/ar3k/30101/ar3kbdaddr.pst \
+#    $(LOCAL_PATH)/wifi2/ar3k/30101/PS_ASIC.pst:/system/etc/firmware/ar3k/30101/PS_ASIC.pst \
+#    $(LOCAL_PATH)/wifi2/ar3k/30101/RamPatch.txt:/system/etc/firmware/ar3k/30101/RamPatch.txt \
+#    $(LOCAL_PATH)/wifi2/ar3k/ramps_0x01020200_40.dfu:/system/etc/firmware/ar3k/ramps_0x01020200_40.dfu \
+#    $(LOCAL_PATH)/wifi2/ar3k/ramps_0x01020001_26.dfu:/system/etc/firmware/ar3k/ramps_0x01020001_26.dfu \
+#    $(LOCAL_PATH)/wifi2/ar3k/AthrBT_0x01020200.dfu:/system/etc/firmware/ar3k/AthrBT_0x01020200.dfu \
+#    $(LOCAL_PATH)/wifi2/ar3k/30000/ar3kbdaddr.pst:/system/etc/firmware/ar3k/30000/ar3kbdaddr.pst \
+#    $(LOCAL_PATH)/wifi2/ar3k/30000/PS_ASIC.pst:/system/etc/firmware/ar3k/30000/PS_ASIC.pst \
+#    $(LOCAL_PATH)/wifi2/ar3k/30000/RamPatch.txt:/system/etc/firmware/ar3k/30000/RamPatch.txt \
+#    $(LOCAL_PATH)/wifi2/ar3k/1020200/ar3kbdaddr.pst:/system/etc/firmware/ar3k/1020200/ar3kbdaddr.pst \
+#    $(LOCAL_PATH)/wifi2/ar3k/1020200/PS_ASIC.pst:/system/etc/firmware/ar3k/1020200/PS_ASIC.pst \
+#    $(LOCAL_PATH)/wifi2/ar3k/1020200/RamPatch.txt:/system/etc/firmware/ar3k/1020200/RamPatch.txt \
+#    $(LOCAL_PATH)/wifi2/ar3k/30101coex/ar3kbdaddr.pst:/system/etc/firmware/ar3k/30101coex/ar3kbdaddr.pst \
+#    $(LOCAL_PATH)/wifi2/ar3k/30101coex/PS_ASIC.pst:/system/etc/firmware/ar3k/30101coex/PS_ASIC.pst \
+#    $(LOCAL_PATH)/wifi2/ar3k/30101coex/PS_ASIC_aclLowPri.pst:/system/etc/firmware/ar3k/30101coex/PS_ASIC_aclLowPri.pst \
+#    $(LOCAL_PATH)/wifi2/ar3k/30101coex/PS_ASIC_aclHighPri.pst:/system/etc/firmware/ar3k/30101coex/PS_ASIC_aclHighPri.pst \
+#    $(LOCAL_PATH)/wifi2/ar3k/30101coex/RamPatch.txt:/system/etc/firmware/ar3k/30101coex/RamPatch.txt \
+#    $(LOCAL_PATH)/wifi2/ar3k/ramps_0x01020200_26.dfu:/system/etc/firmware/ar3k/ramps_0x01020200_26.dfu \
+#    $(LOCAL_PATH)/wifi2/ar3k/AthrBT_0x01020001.dfu:/system/etc/firmware/ar3k/AthrBT_0x01020001.dfu
 
 # Some files for 3G
 PRODUCT_COPY_FILES += \
