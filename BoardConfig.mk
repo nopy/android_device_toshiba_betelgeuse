@@ -31,8 +31,6 @@ BOARD_USE_USB_MASS_STORAGE_SWITCH := true
 # custom recovery ui
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/toshiba/betelgeuse/recovery/recovery_ui.c
 
-BOARD_CUSTOM_BLUEDROID := ../../../device/toshiba/betelgeuse/bluedroid/bluetooth.c
-
 # Wifi related defines
 #CONFIG_DRIVER_AR6000 := true
 #BOARD_WPA_SUPPLICANT_DRIVER := AR6000

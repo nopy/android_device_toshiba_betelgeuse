@@ -129,13 +129,6 @@ service iprenew_wlan0 /system/bin/dhcpcd -n
 #service sdcard /system/bin/sdcard /data/media 1023 1023
 #    class late_start
 
-#Bluetooth Shuttle
-service hciattach /system/bin/nv_hciattach -n -t 100 -s 921600 ttyHS2 csr_tegra 921600 flow
-    user bluetooth
-    group system bluetooth net_bt_admin misc
-    oneshot
-    disabled
-
 # Start GPS daemon
 service gps-daemon /system/bin/glgps_nvidiaTegra2android -c /system/etc/gps/gpsconfig.xml
     class late_start
