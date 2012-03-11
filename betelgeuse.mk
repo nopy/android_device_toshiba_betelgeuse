@@ -70,6 +70,12 @@ PRODUCT_COPY_FILES += \
 #    device/toshiba/betelgeuse/modules/scsi_wait_scan.ko:system/modules/scsi_wait_scan.ko \
 #    device/toshiba/betelgeuse/modules/bcm4329.ko:system/modules/bcm4329.ko 
 
+PRODUCT_COPY_FILES += \
+    hardware/AR6kSDK.3.1/AR6kSDK.build_3.1_RC.563/host/miscdrv/ar3k/30101coex/PS_ASIC_aclHighPri.pst:/system/wifi/ar3k/30101coex/PS_ASIC_aclHighPri.pst \
+    hardware/AR6kSDK.3.1/AR6kSDK.build_3.1_RC.563/host/miscdrv/ar3k/30101coex/PS_ASIC_aclLowPri.pst:/system/wifi/ar3k/30101coex/PS_ASIC_aclLowPri.pst \
+    hardware/AR6kSDK.3.1/AR6kSDK.build_3.1_RC.563/host/miscdrv/ar3k/30101coex/PS_ASIC.pst:/system/wifi/ar3k/30101coex/PS_ASIC.pst \
+    hardware/AR6kSDK.3.1/AR6kSDK.build_3.1_RC.563/host/miscdrv/ar3k/30101coex/RamPatch.txt:/system/wifi/ar3k/30101coex/RamPatch.txt
+
 #PRODUCT_COPY_FILES += \
 #    $(LOCAL_PATH)/wifi/dhcpcd.conf:system/etc/dhcpcd/dhcpcd.conf \
 #    $(LOCAL_PATH)/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
