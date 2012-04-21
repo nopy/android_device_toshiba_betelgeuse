@@ -76,6 +76,9 @@ PRODUCT_COPY_FILES += \
     hardware/AR6kSDK.3.1/AR6kSDK.build_3.1_RC.563/host/miscdrv/ar3k/30101coex/PS_ASIC.pst:/system/wifi/ar3k/30101coex/PS_ASIC.pst \
     hardware/AR6kSDK.3.1/AR6kSDK.build_3.1_RC.563/host/miscdrv/ar3k/30101coex/RamPatch.txt:/system/wifi/ar3k/30101coex/RamPatch.txt
 
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf
+
 #PRODUCT_COPY_FILES += \
 #    $(LOCAL_PATH)/wifi/dhcpcd.conf:system/etc/dhcpcd/dhcpcd.conf \
 #    $(LOCAL_PATH)/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
