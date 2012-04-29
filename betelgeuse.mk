@@ -14,16 +14,6 @@
 # limitations under the License.
 #
 
-ifndef BUILD_KERNEL
-ifeq ($(TARGET_PREBUILT_KERNEL),)
-LOCAL_KERNEL := device/toshiba/betelgeuse/kernel
-else
-LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
-endif
-PRODUCT_COPY_FILES := \
-    $(LOCAL_KERNEL):kernel 
-endif
-
 PRODUCT_COPY_FILES += \
     device/toshiba/betelgeuse/init.betelgeuse.rc:root/init.betelgeuse.rc \
     device/toshiba/betelgeuse/init.nv_dev_board.usb.rc:root/init.nv_dev_board.usb.rc \
