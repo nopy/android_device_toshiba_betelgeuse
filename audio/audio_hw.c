@@ -309,7 +309,7 @@ static int set_route_by_array(struct mixer *mixer, struct route_setting *route,
 
 static void force_all_standby(struct adam_audio_device *adev)
 {
-	LOGD("force_all_standby");
+	ALOGD("force_all_standby");
 	
     struct adam_stream_in *in;
     struct adam_stream_out *out;
@@ -331,7 +331,7 @@ static void force_all_standby(struct adam_audio_device *adev)
 
 static void select_mode(struct adam_audio_device *adev)
 {
-	LOGD("select_mode: %x",adev->mode);
+	ALOGD("select_mode: %x",adev->mode);
 	
 	/*Those are different modes within the system. You are usually in 
  	 MODE_NORMAL. When someone calls you, it enters MODE_RINGTONE. When you 
@@ -346,13 +346,13 @@ static void select_mode(struct adam_audio_device *adev)
 	*/
 	
     if (adev->mode == AUDIO_MODE_IN_CALL) {
-        LOGE("Entering IN_CALL state, in_call=%d", adev->in_call);
+        ALOGE("Entering IN_CALL state, in_call=%d", adev->in_call);
         if (!adev->in_call) {
             force_all_standby(adev);
             adev->in_call = 1;
         }
     } else {
-        LOGE("Leaving IN_CALL state, in_call=%d, mode=%d", adev->in_call, adev->mode);
+        ALOGE("Leaving IN_CALL state, in_call=%d, mode=%d", adev->in_call, adev->mode);
         if (adev->in_call) {
             adev->in_call = 0;
             force_all_standby(adev);
@@ -386,16 +386,16 @@ static int start_output_stream(struct adam_stream_out *out)
 
     bt_on = adev->devices & AUDIO_DEVICE_OUT_ALL_SCO;
     if (bt_on) {
-	LOGD("Using BT SCO");
+	ALOGD("Using BT SCO");
 	port = PORT_VOICE;
     }
 
-    LOGD("start_output_stream: card:%d, port:%d, rate:%d",card,port,out->config.rate);
+    ALOGD("start_output_stream: card:%d, port:%d, rate:%d",card,port,out->config.rate);
 	
     out->pcm = pcm_open(card, port, PCM_OUT | PCM_MMAP | PCM_NOIRQ, &out->config);
 
     if (!pcm_is_ready(out->pcm)) {
-        LOGE("cannot open pcm_out driver: %s", pcm_get_error(out->pcm));
+        ALOGE("cannot open pcm_out driver: %s", pcm_get_error(out->pcm));
         pcm_close(out->pcm);
         adev->active_output = NULL;
         return -ENOMEM;
@@ -411,7 +411,7 @@ static int start_output_stream(struct adam_stream_out *out)
 
 static int check_input_parameters(uint32_t sample_rate, int format, int channel_count)
 {
-	LOGD("check_input_parameters: rate:%d, format:%d, count:%d",sample_rate,format,channel_count);
+	ALOGD("check_input_parameters: rate:%d, format:%d, count:%d",sample_rate,format,channel_count);
 	
     if (format != AUDIO_FORMAT_PCM_16_BIT)
         return -EINVAL;
@@ -441,7 +441,7 @@ static size_t get_input_buffer_size(uint32_t sample_rate, int format, int channe
     size_t size;
     size_t device_rate;
 	
-	LOGD("get_input_buffer_size: rate:%d, format:%d, count:%d",sample_rate,format,channel_count);
+	ALOGD("get_input_buffer_size: rate:%d, format:%d, count:%d",sample_rate,format,channel_count);
 
     if (check_input_parameters(sample_rate, format, channel_count) != 0)
         return 0;
@@ -523,7 +523,7 @@ static int get_playback_delay(struct adam_stream_out *out,
         buffer->time_stamp.tv_sec  = 0;
         buffer->time_stamp.tv_nsec = 0;
         buffer->delay_ns           = 0;
-        LOGV("get_playback_delay(): pcm_get_htimestamp error,"
+        ALOGV("get_playback_delay(): pcm_get_htimestamp error,"
                 "setting playbackTimestamp to 0");
         return status;
     }
@@ -635,7 +635,7 @@ static int out_set_parameters(struct audio_stream *stream, const char *kvpairs)
     char value[32];
     int ret, val = 0;
 
-    LOGD("out_set_parameters: kvpairs:%s\n", kvpairs);
+    ALOGD("out_set_parameters: kvpairs:%s\n", kvpairs);
 	
     parms = str_parms_create_str(kvpairs);
 
@@ -659,7 +659,7 @@ static int out_set_parameters(struct audio_stream *stream, const char *kvpairs)
 			mixer_ctl_set_value(adev->mixer_ctls.headset_switch, 0,
 				(val & AUDIO_DEVICE_OUT_WIRED_HEADPHONE) ? 1 : 0);
 				
-			LOGD("Headphone out:%c, Speaker out:%c, HDMI out:%c, BT SCO: %c\n",
+			ALOGD("Headphone out:%c, Speaker out:%c, HDMI out:%c, BT SCO: %c\n",
 				(val & AUDIO_DEVICE_OUT_WIRED_HEADPHONE) ? 'Y' : 'N',
 				(val & AUDIO_DEVICE_OUT_SPEAKER) ? 'Y' : 'N',
 				(val & AUDIO_DEVICE_OUT_AUX_DIGITAL) ? 'Y' : 'N',
@@ -698,7 +698,7 @@ static int out_set_volume(struct audio_stream_out *stream, float left,
     struct adam_stream_out *out = (struct adam_stream_out *)stream;
     struct adam_audio_device *adev = out->dev;
 	
-	LOGD("out_set_volume: left:%f, right:%f\n",left,right);
+	ALOGD("out_set_volume: left:%f, right:%f\n",left,right);
 
 	mixer_ctl_set_value(adev->mixer_ctls.speaker_volume, 0,
 		PERC_TO_SPEAKER_VOLUME(left));
@@ -728,7 +728,7 @@ static ssize_t out_write(struct audio_stream_out *stream, const void* buffer,
     int kernel_frames;
     void *buf;
 	
-	/*LOGD("out_write: size:%d\n",bytes);*/
+	/*ALOGD("out_write: size:%d\n",bytes);*/
 
     /* acquiring hw device mutex systematically is useful if a low priority thread is waiting
      * on the output stream mutex - e.g. executing select_mode() while holding the hw device
@@ -800,7 +800,7 @@ static ssize_t out_write(struct audio_stream_out *stream, const void* buffer,
         }
     } while (kernel_frames > out->write_threshold);
 
-	/*LOGD("out_write: writing:%d\n", out_frames * frame_size);*/
+	/*ALOGD("out_write: writing:%d\n", out_frames * frame_size);*/
     ret = pcm_mmap_write(out->pcm, (void *)buf, out_frames * frame_size);
 
 exit:
@@ -857,7 +857,7 @@ static int start_input_stream(struct adam_stream_in *in)
     /* this assumes routing is done previously */
     in->pcm = pcm_open(CARD_SND, PORT_MM, PCM_IN, &in->config);
     if (!pcm_is_ready(in->pcm)) {
-        LOGE("cannot open pcm_in driver: %s", pcm_get_error(in->pcm));
+        ALOGE("cannot open pcm_in driver: %s", pcm_get_error(in->pcm));
         pcm_close(in->pcm);
         adev->active_input = NULL;
         return -ENOMEM;
@@ -1049,7 +1049,7 @@ static void get_capture_delay(struct adam_stream_in *in,
         buffer->time_stamp.tv_sec  = 0;
         buffer->time_stamp.tv_nsec = 0;
         buffer->delay_ns           = 0;
-        LOGW("read get_capture_delay(): pcm_htimestamp error");
+        ALOGW("read get_capture_delay(): pcm_htimestamp error");
         return;
     }
 
@@ -1070,7 +1070,7 @@ static void get_capture_delay(struct adam_stream_in *in,
 
     buffer->time_stamp = tstamp;
     buffer->delay_ns   = delay_ns;
-    LOGV("get_capture_delay time_stamp = [%ld].[%ld], delay_ns: [%d],"
+    ALOGV("get_capture_delay time_stamp = [%ld].[%ld], delay_ns: [%d],"
          " kernel_delay:[%ld], buf_delay:[%ld], rsmp_delay:[%ld], kernel_frames:[%d], "
          "in->frames_in:[%d], in->proc_frames_in:[%d], frames:[%d]",
          buffer->time_stamp.tv_sec , buffer->time_stamp.tv_nsec, buffer->delay_ns,
@@ -1084,7 +1084,7 @@ static int32_t update_echo_reference(struct adam_stream_in *in, size_t frames)
     struct echo_reference_buffer b;
     b.delay_ns = 0;
 
-    LOGV("update_echo_reference, frames = [%d], in->ref_frames_in = [%d],  "
+    ALOGV("update_echo_reference, frames = [%d], in->ref_frames_in = [%d],  "
           "b.frame_count = [%d]",
          frames, in->ref_frames_in, frames - in->ref_frames_in);
     if (in->ref_frames_in < frames) {
@@ -1103,12 +1103,12 @@ static int32_t update_echo_reference(struct adam_stream_in *in, size_t frames)
         if (in->echo_reference->read(in->echo_reference, &b) == 0)
         {
             in->ref_frames_in += b.frame_count;
-            LOGV("update_echo_reference: in->ref_frames_in:[%d], "
+            ALOGV("update_echo_reference: in->ref_frames_in:[%d], "
                     "in->ref_buf_size:[%d], frames:[%d], b.frame_count:[%d]",
                  in->ref_frames_in, in->ref_buf_size, frames, b.frame_count);
         }
     } else
-        LOGW("update_echo_reference: NOT enough frames to read ref buffer");
+        ALOGW("update_echo_reference: NOT enough frames to read ref buffer");
     return b.delay_ns;
 }
 
@@ -1201,7 +1201,7 @@ static int get_next_buffer(struct resampler_buffer_provider *buffer_provider,
                                    in->config.period_size *
                                        audio_stream_frame_size(&in->stream.common));
         if (in->read_status != 0) {
-            LOGE("get_next_buffer() pcm_read error %d", in->read_status);
+            ALOGE("get_next_buffer() pcm_read error %d", in->read_status);
             buffer->raw = NULL;
             buffer->frame_count = 0;
             return in->read_status;
@@ -1290,7 +1290,7 @@ static ssize_t process_frames(struct adam_stream_in *in, void* buffer, ssize_t f
                 in->proc_buf = (int16_t *)realloc(in->proc_buf,
                                          in->proc_buf_size *
                                              in->config.channels * sizeof(int16_t));
-                LOGV("process_frames(): in->proc_buf %p size extended to %d frames",
+                ALOGV("process_frames(): in->proc_buf %p size extended to %d frames",
                      in->proc_buf, in->proc_buf_size);
             }
             frames_rd = read_frames(in,
@@ -1483,7 +1483,7 @@ static int adev_open_output_stream(struct audio_hw_device *dev,
     struct adam_stream_out *out;
     int ret;
 
-	LOGD("adev_open_output_stream");
+	ALOGD("adev_open_output_stream");
 	
     out = (struct adam_stream_out *)calloc(1, sizeof(struct adam_stream_out));
     if (!out)
@@ -1547,7 +1547,7 @@ static void adev_close_output_stream(struct audio_hw_device *dev,
 {
     struct adam_stream_out *out = (struct adam_stream_out *)stream;
 
-	LOGD("adev_close_output_stream");
+	ALOGD("adev_close_output_stream");
 	
     out_standby(&stream->common);
     if (out->buffer)
@@ -1566,7 +1566,7 @@ static int adev_set_parameters(struct audio_hw_device *dev, const char *kvpairs)
 	char *str;
     char value[32];
    
-	LOGD("adev_set_parameters: kppairs: %s", kvpairs);
+	ALOGD("adev_set_parameters: kppairs: %s", kvpairs);
 
     parms = str_parms_create_str(kvpairs);
 	
@@ -1602,7 +1602,7 @@ static int adev_set_voice_volume(struct audio_hw_device *dev, float volume)
 {
     struct adam_audio_device *adev = (struct adam_audio_device *)dev;
 	
-	LOGD("adev_set_voice_volume: volume: %f", volume);
+	ALOGD("adev_set_voice_volume: volume: %f", volume);
 	
     return 0;
 }
@@ -1612,7 +1612,7 @@ static int adev_set_master_volume(struct audio_hw_device *dev, float volume)
 {
 	struct adam_audio_device *adev = (struct adam_audio_device *)dev;
 
-	LOGD("adev_set_master_volume: volume: %f", volume);
+	ALOGD("adev_set_master_volume: volume: %f", volume);
 	
 	mixer_ctl_set_value(adev->mixer_ctls.pcm_volume, 0,
 		PERC_TO_PCM_VOLUME(volume));
@@ -1627,7 +1627,7 @@ static int adev_set_mode(struct audio_hw_device *dev, int mode)
 {
     struct adam_audio_device *adev = (struct adam_audio_device *)dev;
 
-	LOGD("adev_set_mode: mode: %d", mode);
+	ALOGD("adev_set_mode: mode: %d", mode);
 	
     pthread_mutex_lock(&adev->lock);
     if (adev->mode != mode) {
@@ -1644,7 +1644,7 @@ static int adev_set_mic_mute(struct audio_hw_device *dev, bool state)
 {
     struct adam_audio_device *adev = (struct adam_audio_device *)dev;
 
-	LOGD("adev_set_mic_mute: state: %d", state);
+	ALOGD("adev_set_mic_mute: state: %d", state);
 	
     adev->mic_mute = state;
 
@@ -1671,7 +1671,7 @@ static size_t adev_get_input_buffer_size(const struct audio_hw_device *dev,
                                          int channel_count)
 {
     size_t size;
-	LOGD("adev_get_input_buffer_size: sample_rate: %d, format: %d, channel_count:%d", sample_rate, format, channel_count);
+	ALOGD("adev_get_input_buffer_size: sample_rate: %d, format: %d, channel_count:%d", sample_rate, format, channel_count);
 	
     if (check_input_parameters(sample_rate, format, channel_count) != 0)
         return 0;
@@ -1692,7 +1692,7 @@ static int adev_open_input_stream(struct audio_hw_device *dev, uint32_t devices,
     //int channel_count = popcount(*channel_mask);
     int channel_count = 2;
 
-	LOGD("adev_open_input_stream: channel_count:%d", channel_count);
+	ALOGD("adev_open_input_stream: channel_count:%d", channel_count);
 	
     if (check_input_parameters(*sample_rate, *format, channel_count) != 0)
         return -EINVAL;
@@ -1767,7 +1767,7 @@ static void adev_close_input_stream(struct audio_hw_device *dev,
 {
     struct adam_stream_in *in = (struct adam_stream_in *)stream;
 
-	LOGD("adev_close_input_stream");
+	ALOGD("adev_close_input_stream");
 	
     in_standby(&stream->common);
 
@@ -1791,7 +1791,7 @@ static int adev_close(hw_device_t *device)
 {
     struct adam_audio_device *adev = (struct adam_audio_device *)device;
 	
-	LOGD("adev_close");
+	ALOGD("adev_close");
 
     mixer_close(adev->mixer);
     free(device);
@@ -1801,7 +1801,7 @@ static int adev_close(hw_device_t *device)
 /* xface */
 static uint32_t adev_get_supported_devices(const struct audio_hw_device *dev)
 {
-	LOGD("adev_get_supported_devices");
+	ALOGD("adev_get_supported_devices");
 	return (
 		/* OUT */
 		AUDIO_DEVICE_OUT_SPEAKER |
@@ -1822,7 +1822,7 @@ static int adev_open(const hw_module_t* module, const char* name,
     struct adam_audio_device *adev;
     int ret;
 
-	LOGE("adev_open: name:'%s'",name);
+	ALOGE("adev_open: name:'%s'",name);
 	
     if (strcmp(name, AUDIO_HARDWARE_INTERFACE) != 0)
         return -EINVAL;
@@ -1855,79 +1855,79 @@ static int adev_open(const hw_module_t* module, const char* name,
 	adev->mixer = mixer_open(0);
 	if (!adev->mixer) {
 		free(adev);
-		LOGE("Unable to open the mixer, aborting.");
+		ALOGE("Unable to open the mixer, aborting.");
 		return -EINVAL;
 	}
 
 	adev->mixer_ctls.pcm_volume = mixer_get_ctl_by_name(adev->mixer, MIXER_PCM_PLAYBACK_VOLUME);
 	if (!adev->mixer_ctls.pcm_volume) {
-		LOGE("Unable to find '%s' mixer control", MIXER_PCM_PLAYBACK_VOLUME);
+		ALOGE("Unable to find '%s' mixer control", MIXER_PCM_PLAYBACK_VOLUME);
 		goto error_out;
 	}
 
 	adev->mixer_ctls.pcm_cap_volume = mixer_get_ctl_by_name(adev->mixer, MIXER_PCM_CAPTURE_VOLUME);
 	if (!adev->mixer_ctls.pcm_cap_volume) {
-		LOGE("Unable to find '%s' mixer control", MIXER_PCM_CAPTURE_VOLUME);
+		ALOGE("Unable to find '%s' mixer control", MIXER_PCM_CAPTURE_VOLUME);
 		goto error_out;
 	}
 
 	adev->mixer_ctls.speaker_volume = mixer_get_ctl_by_name(adev->mixer, MIXER_SPEAKER_PLAYBACK_VOLUME);
 	if (!adev->mixer_ctls.speaker_volume) {
-		LOGE("Unable to find '%s' mixer control", MIXER_SPEAKER_PLAYBACK_VOLUME);
+		ALOGE("Unable to find '%s' mixer control", MIXER_SPEAKER_PLAYBACK_VOLUME);
 		goto error_out;
 	}
 
 	adev->mixer_ctls.speaker_switch = mixer_get_ctl_by_name(adev->mixer, MIXER_SPEAKER_PLAYBACK_SWITCH);
 	if (!adev->mixer_ctls.speaker_switch) {
-		LOGE("Unable to find '%s' mixer control", MIXER_SPEAKER_PLAYBACK_SWITCH);
+		ALOGE("Unable to find '%s' mixer control", MIXER_SPEAKER_PLAYBACK_SWITCH);
 		goto error_out;
 	}
 
 	adev->mixer_ctls.headset_volume = mixer_get_ctl_by_name(adev->mixer, MIXER_HEADSET_PLAYBACK_VOLUME);
 	if (!adev->mixer_ctls.headset_volume) { 
-		LOGE("Unable to find '%s' mixer control", MIXER_HEADSET_PLAYBACK_VOLUME);
+		ALOGE("Unable to find '%s' mixer control", MIXER_HEADSET_PLAYBACK_VOLUME);
 		goto error_out;
 	}
 
 	adev->mixer_ctls.headset_switch = mixer_get_ctl_by_name(adev->mixer, MIXER_HEADSET_PLAYBACK_SWITCH);
 	if (!adev->mixer_ctls.headset_switch) {
-		LOGE("Unable to find '%s' mixer control", MIXER_HEADSET_PLAYBACK_SWITCH);
+		ALOGE("Unable to find '%s' mixer control", MIXER_HEADSET_PLAYBACK_SWITCH);
 		goto error_out;
 	}
 
 	adev->mixer_ctls.micl_volume = mixer_get_ctl_by_name(adev->mixer, MIXER_MICL_CAPTURE_VOLUME);
 		if (!adev->mixer_ctls.micl_volume) {
-		LOGE("Unable to find '%s' mixer control", MIXER_MICL_CAPTURE_VOLUME);
+		ALOGE("Unable to find '%s' mixer control", MIXER_MICL_CAPTURE_VOLUME);
 		goto error_out;
 	}
 
 	adev->mixer_ctls.micr_volume = mixer_get_ctl_by_name(adev->mixer, MIXER_MICR_CAPTURE_VOLUME);
 		if (!adev->mixer_ctls.micr_volume) {
-		LOGE("Unable to find '%s' mixer control", MIXER_MICR_CAPTURE_VOLUME);
+		ALOGE("Unable to find '%s' mixer control", MIXER_MICR_CAPTURE_VOLUME);
 		goto error_out;
 	}
 
 	adev->mixer_ctls.micl_switch = mixer_get_ctl_by_name(adev->mixer, MIXER_MICL_CAPTURE_SWITCH);
 		if (!adev->mixer_ctls.micl_switch) {
-		LOGE("Unable to find '%s' mixer control", MIXER_MICL_CAPTURE_SWITCH);
+		ALOGE("Unable to find '%s' mixer control", MIXER_MICL_CAPTURE_SWITCH);
 		goto error_out;
 	}
 
 	adev->mixer_ctls.micr_switch = mixer_get_ctl_by_name(adev->mixer, MIXER_MICR_CAPTURE_SWITCH);
 		if (!adev->mixer_ctls.micr_switch) {
-		LOGE("Unable to find '%s' mixer control", MIXER_MICR_CAPTURE_SWITCH);
+		ALOGE("Unable to find '%s' mixer control", MIXER_MICR_CAPTURE_SWITCH);
 		goto error_out;
 	}
 
 	adev->mixer_ctls.micl_mux = mixer_get_ctl_by_name(adev->mixer, MIXER_MICL_CAPTURE_MUX);
 		if (!adev->mixer_ctls.micl_mux) {
-		LOGE("Unable to find '%s' mixer control", MIXER_MICL_CAPTURE_MUX);
+		ALOGE("Unable to find '%s' mixer control", MIXER_MICL_CAPTURE_MUX);
 		goto error_out;
 	}
 
 	adev->mixer_ctls.micr_mux = mixer_get_ctl_by_name(adev->mixer, MIXER_MICR_CAPTURE_MUX);
 		if (!adev->mixer_ctls.micr_mux) {
-		LOGE("Unable to find '%s' mixer control", MIXER_MICR_CAPTURE_MUX);
+		ALOGE("Unable to find '%s' mixer control", MIXER_MICR_CAPTURE_MUX);
 		goto error_out;
 	}
 
@@ -1950,15 +1950,16 @@ error_out:
 	{
 		unsigned int cnt = mixer_get_num_ctls(adev->mixer);
 		unsigned int i;
-		LOGD("Mixer dump: Nr of controls: %d",cnt);
+		ALOGD("Mixer dump: Nr of controls: %d",cnt);
 		for (i = 0; i < cnt; i++) {
 			struct mixer_ctl* x = mixer_get_ctl(adev->mixer,i);
 			if (x != NULL) {
-				char name[128];
+				char *name ;//[128];
 				const char* type;
-				mixer_ctl_get_name(x,name,sizeof(name));
+				//mixer_ctl_get_name(x,name,sizeof(name));
+				name = mixer_ctl_get_name(x);
 				type = mixer_ctl_get_type_string(x);
-				LOGD("#%d: '%s' [%s]",i,name,type);		
+				ALOGD("#%d: '%s' [%s]",i,name,type);		
 			}
 		}
 	}
