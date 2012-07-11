@@ -94,18 +94,18 @@ static void m_determine_acc_chip();
 /*pass values to kernel space*/
 static int write_cmd(char const *path, char *cmd, int size)
 {
-LOGD("write_cmd(%s, %s, %d )", path, cmd, size ) ;
+ALOGD("write_cmd(%s, %s, %d )", path, cmd, size ) ;
 	int fd, ret;
 
 	fd = open(path, O_WRONLY);
 	if (fd < 0) {
-		LOGE("Cannot open %s\n", path);
+		ALOGE("Cannot open %s\n", path);
 		return -ENODEV;
 	}
 
 	ret = write(fd, cmd, size);
 	if (ret != size)
-		LOGE("Error. Wrote: %d, should have written: %d\n", ret, size);
+		ALOGE("Error. Wrote: %d, should have written: %d\n", ret, size);
 
 	close(fd);
 	return ret;
@@ -115,12 +115,12 @@ LOGD("write_cmd(%s, %s, %d )", path, cmd, size ) ;
 /* implement individual sensor enable and disables */
 static int activate_acc(int enable)
 {
-LOGD("activate_acc(%d)",enable) ;
+ALOGD("activate_acc(%d)",enable) ;
 
 	int ret = 0;
 
 	if (enable) {
-LOGD("active_acc enabling") ;
+ALOGD("active_acc enabling") ;
 		if (count_acc == 0) {
 			if (acc_id == 50) {
 				ret = write_cmd(PATH_MODE_ACC, LSM303DLH_A_MODE_NORMAL, 2);
@@ -137,7 +137,7 @@ LOGD("active_acc enabling") ;
 			count_acc++;
 		}
 	} else {
-LOGD("active_acc disabling") ;
+ALOGD("active_acc disabling") ;
 		if (count_acc == 0)
 			return 0;
 		count_acc--;
@@ -150,7 +150,7 @@ LOGD("active_acc disabling") ;
 
 static int activate_mag(int enable)
 {
-LOGD("activate_mag(%d)", enable) ;
+ALOGD("activate_mag(%d)", enable) ;
 	int ret = 0;
 	if (enable) {
 		if (count_mag == 0) {
@@ -173,7 +173,7 @@ LOGD("activate_mag(%d)", enable) ;
 
 static int activate_gyr(int enable)
 {
-LOGD("activate_gyr(%d)", enable ) ;
+ALOGD("activate_gyr(%d)", enable ) ;
 	int ret = 0;
 	if (enable) {
 		if (count_gyr == 0) {
@@ -198,7 +198,7 @@ LOGD("activate_gyr(%d)", enable ) ;
 
 static int activate_lux(int enable)
 {
-LOGD("activate_lux(%d)", enable ) ;
+ALOGD("activate_lux(%d)", enable ) ;
 	int ret = -1;
 	if (enable) {
 		if (count_lux == 0) {
@@ -221,7 +221,7 @@ LOGD("activate_lux(%d)", enable ) ;
 
 static int activate_prox(int enable)
 {
-LOGD("activate_prox(%d)", enable ) ;
+ALOGD("activate_prox(%d)", enable ) ;
 	int ret = -1;
 	static pthread_t thread = -1;
 
@@ -259,7 +259,7 @@ LOGD("activate_prox(%d)", enable ) ;
 
 static int activate_orientation(int enable)
 {
-LOGD("activate_orientation(%d)", enable) ;
+ALOGD("activate_orientation(%d)", enable) ;
 	int ret = 0;
 	if (enable) {
 		if (count_orien == 0) {
@@ -292,7 +292,7 @@ LOGD("activate_orientation(%d)", enable) ;
 
 static void poll_accelerometer(sensors_event_t *values)
 {
-//LOGD("## poll_accelerometer ##") ;
+//ALOGD("## poll_accelerometer ##") ;
 	int fd;
 	int nread;
 	int data[3];
@@ -308,11 +308,11 @@ static void poll_accelerometer(sensors_event_t *values)
 	lseek(fd, 0, SEEK_SET);
 	nread = read(fd, buf, SIZE_OF_BUF);
 
-//LOGD("nread %d", nread ) ;
+//ALOGD("nread %d", nread ) ;
 //	if (nread == sizeof(buf)) {
 		sscanf(buf, "(%d,%d,%d)", &data[0], &data[1], &data[2]) ;
 //	}
-//LOGD("polled(%d:%d:%d)", data[0], data[1], data[2] ) ;
+//ALOGD("polled(%d:%d:%d)", data[0], data[1], data[2] ) ;
 	values->acceleration.status = SENSOR_STATUS_ACCURACY_HIGH;
 	values->acceleration.x = (float) data[0];
 	values->acceleration.x *= CONVERT_A;
@@ -348,7 +348,7 @@ static void poll_magnetometer(sensors_event_t *values)
 	//if (nread == sizeof(buf))
 	sscanf(buf, "%d %d %d", &data[2], &data[1], &data[0]);
 
-	LOGD("poll_magnetometer: %i %i %i", data[0], data[1], data[2]);
+	ALOGD("poll_magnetometer: %i %i %i", data[0], data[1], data[2]);
 	values->magnetic.status = SENSOR_STATUS_ACCURACY_HIGH;
 	values->magnetic.x = (data[0] * 100) / GAIN_X;
 	values->magnetic.y = (data[1] * 100) / GAIN_Y;
@@ -534,7 +534,7 @@ void *proximity_getdata()
 		close(fd);
 	}
 	else
-	   LOGD("\n /dev/input/event0 is not a valid device");
+	   ALOGD("\n /dev/input/event0 is not a valid device");
 	return NULL;
 }
 
@@ -597,7 +597,7 @@ static int m_poll_activate(struct sensors_poll_device_t *dev,
 		int handle, int enabled)
 {
 	int status = 0;
-	LOGD("libsensors: Entering function %s with handle = %i, enable = %d\n",
+	ALOGD("libsensors: Entering function %s with handle = %i, enable = %d\n",
 			__FUNCTION__, handle, enabled);
 
 	m_determine_acc_chip();
@@ -622,7 +622,7 @@ static int m_poll_activate(struct sensors_poll_device_t *dev,
 		status = activate_prox(enabled);
 		break;
 	default:
-		LOGD("libsensors:This sensor/handle is not supported %s\n",
+		ALOGD("libsensors:This sensor/handle is not supported %s\n",
 				__FUNCTION__);
 		break;
 	}
@@ -654,7 +654,7 @@ static int m_poll_set_delay(struct sensors_poll_device_t *dev,
 {
 	int microseconds = ns / 1000;
 
-	LOGD("libsensors: set delay = %d in microseconds\n", microseconds);
+	ALOGD("libsensors: set delay = %d in microseconds\n", microseconds);
 
 	switch (handle) {
 	case HANDLE_ORIENTATION:
@@ -680,7 +680,7 @@ static int m_poll_set_delay(struct sensors_poll_device_t *dev,
 		/* ignored */
 		break;
 	default:
-		LOGD("libsensors:This sensor/handle is not supported %s\n",
+		ALOGD("libsensors:This sensor/handle is not supported %s\n",
 				__FUNCTION__);
 		break;
 	}
@@ -786,7 +786,7 @@ static int m_poll_close(struct hw_device_t *dev)
 	struct sensors_poll_device_t *poll_device =
 		(struct sensors_poll_device_t *) dev;
 
-	LOGD("libsensors: Closing poll data context.\n");
+	ALOGD("libsensors: Closing poll data context.\n");
 
 	pthread_mutex_destroy(&count_mutex);
 	pthread_cond_destroy(&count_threshold_cv);
@@ -816,7 +816,7 @@ static void m_determine_acc_chip()
 static int m_open_sensors(const struct hw_module_t *module,
 		const char *name, struct hw_device_t **device)
 {
-	LOGD("libsensors: Entering function %s with param name = %s\n",
+	ALOGD("libsensors: Entering function %s with param name = %s\n",
 			__FUNCTION__, name);
 
 	int status = -EINVAL;
