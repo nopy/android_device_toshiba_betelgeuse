@@ -122,7 +122,7 @@ bool CameraHardware::PowerOn()
 		::write(handle,"1\n",2);
 		::close(handle);
 	} else {
-		LOGE("Could not open %s for writing.", CAMERA_POWER);
+		ALOGE("Could not open %s for writing.", CAMERA_POWER);
 		return false;
     } 
 	
@@ -142,7 +142,7 @@ bool CameraHardware::PowerOn()
 		::close(handle);
 		return true;
 	} else {
-		LOGE("Unable to power camera");
+		ALOGE("Unable to power camera");
 	}
 	
 	return false;
@@ -158,7 +158,7 @@ bool CameraHardware::PowerOff()
 		::write(handle,"0\n",2);
 		::close(handle);
 	} else {
-		LOGE("Could not open %s for writing.", CAMERA_POWER);
+		ALOGE("Could not open %s for writing.", CAMERA_POWER);
 		return false;
     } 
 	return true;
@@ -285,7 +285,7 @@ bool CameraHardware::NegotiatePreviewFormat(struct preview_stream_ops* win)
 	
 	// Set the buffer geometry of the surface and YV12 as the preview format
 	if (win->set_buffers_geometry(win,pw,ph,PIXEL_FORMAT_YV12) != NO_ERROR) {
-		LOGE("Unable to set buffer geometry");
+		ALOGE("Unable to set buffer geometry");
 		return false;
 	}
 
@@ -344,7 +344,7 @@ status_t CameraHardware::setPreviewWindow(struct preview_stream_ops* window)
 			status_t res = window->set_usage(window, GRALLOC_USAGE_SW_WRITE_OFTEN);
 			if (res != NO_ERROR) {
 				res = -res; // set_usage returns a negative errno.
-				LOGE("%s: Error setting preview window usage %d -> %s",
+				ALOGE("%s: Error setting preview window usage %d -> %s",
 					 __FUNCTION__, res, strerror(res));
 				return res;
 			}
@@ -482,7 +482,7 @@ status_t CameraHardware::startPreviewLocked()
 
     status_t ret = camera.Open(videodevice);
 	if (ret != NO_ERROR) {
-		LOGE("Failed to initialize Camera");
+		ALOGE("Failed to initialize Camera");
 		return ret;
 	}
 
@@ -490,7 +490,7 @@ status_t CameraHardware::startPreviewLocked()
 
     ret = camera.Init(width, height, fps);
 	if (ret != NO_ERROR) {
-		LOGE("Failed to setup streaming");
+		ALOGE("Failed to setup streaming");
 		return ret;
 	}
 	
@@ -517,7 +517,7 @@ status_t CameraHardware::startPreviewLocked()
 
     ret = camera.StartStreaming();
 	if (ret != NO_ERROR) {
-		LOGE("Failed to start streaming");
+		ALOGE("Failed to start streaming");
 		return ret;
 	}
 
@@ -705,12 +705,12 @@ status_t CameraHardware::setParameters(const char* parms)
 		strcmp(params.getPreviewFormat(),"yuv422sp") && 
 		strcmp(params.getPreviewFormat(),"yuv420sp") && 
 		strcmp(params.getPreviewFormat(),"yuv420p")) {
-        LOGE("CameraHardware::setParameters: Unsupported format '%s' for preview",params.getPreviewFormat());
+        ALOGE("CameraHardware::setParameters: Unsupported format '%s' for preview",params.getPreviewFormat());
         return BAD_VALUE;
     }
 
     if (strcmp(params.getPictureFormat(), CameraParameters::PIXEL_FORMAT_JPEG)) {
-        LOGE("CameraHardware::setParameters: Only jpeg still pictures are supported");
+        ALOGE("CameraHardware::setParameters: Only jpeg still pictures are supported");
         return BAD_VALUE;
     }
 
@@ -718,7 +718,7 @@ status_t CameraHardware::setParameters(const char* parms)
 		strcmp(params.get(CameraParameters::KEY_VIDEO_FRAME_FORMAT),"yuv422sp") && 
 		strcmp(params.get(CameraParameters::KEY_VIDEO_FRAME_FORMAT),"yuv420sp") && 
 		strcmp(params.get(CameraParameters::KEY_VIDEO_FRAME_FORMAT),"yuv420p")) {
-        LOGE("CameraHardware::setParameters: Unsupported format '%s' for recording",params.get(CameraParameters::KEY_VIDEO_FRAME_FORMAT));
+        ALOGE("CameraHardware::setParameters: Unsupported format '%s' for recording",params.get(CameraParameters::KEY_VIDEO_FRAME_FORMAT));
         return BAD_VALUE;
 	}	
 	
@@ -766,7 +766,7 @@ char* CameraHardware::getParameters()
         return ret_str;
     }
 
-	LOGE("%s: Unable to allocate string for %s", __FUNCTION__, params.string());
+	ALOGE("%s: Unable to allocate string for %s", __FUNCTION__, params.string());
 	/* Apparently, we can't return NULL fron this routine. */
 	return &lNoParam;
 }
@@ -818,7 +818,7 @@ void CameraHardware::initDefaultParameters()
 	SortedVector<int> avFps;
 	
     if (camera.Open(videodevice) != NO_ERROR) {
-	    LOGE("cannot open device.");
+	    ALOGE("cannot open device.");
 
     } else {
 	
@@ -971,7 +971,7 @@ void CameraHardware::initDefaultParameters()
     p.set(CameraParameters::KEY_ZOOM_SUPPORTED, "false");
 
     if (setParameters(p.flatten()) != NO_ERROR) {
-        LOGE("CameraHardware::initDefaultParameters: Failed to set default parameters.");
+        ALOGE("CameraHardware::initDefaultParameters: Failed to set default parameters.");
     }
 }
 
@@ -984,7 +984,7 @@ void CameraHardware::initHeapLocked()
 	int video_width, video_height;
 
 	if (!mRequestMemory) {	
-		LOGE("No memory allocator available");
+		ALOGE("No memory allocator available");
 		return;
 	}
 	
@@ -1062,7 +1062,7 @@ void CameraHardware::initHeapLocked()
 		if (mRawPreviewHeap) { 
 			mRawPreviewBuffer = mRawPreviewHeap->data;
 		} else {
-			LOGE("Unable to allocate memory for RawPreview");
+			ALOGE("Unable to allocate memory for RawPreview");
 		}
 		
         LOGD("CameraHardware::initHeapLocked: Raw preview heap allocated");
@@ -1136,7 +1136,7 @@ void CameraHardware::initHeapLocked()
 				mPreviewBuffer[i] = (char*)mPreviewHeap->data + (i * mPreviewFrameSize);
 			}
 		} else {
-			LOGE("Unable to allocate memory for Preview");
+			ALOGE("Unable to allocate memory for Preview");
 		}
         
         LOGD("CameraHardware::initHeapLocked: preview heap allocated");
@@ -1207,7 +1207,7 @@ void CameraHardware::initHeapLocked()
 				mRecBuffers[i] = (char*)mRecordingHeap->data + (i * mRecordingFrameSize);
 			}
 		} else {
-			LOGE("Unable to allocate memory for Recording");
+			ALOGE("Unable to allocate memory for Recording");
 		}
 	
         LOGD("CameraHardware::initHeapLocked: recording heap allocated");
@@ -1233,7 +1233,7 @@ void CameraHardware::initHeapLocked()
 		if (mRawPictureHeap) { 
 			mRawBuffer = mRawPictureHeap->data;
 		} else {
-			LOGE("Unable to allocate memory for RawPicture");
+			ALOGE("Unable to allocate memory for RawPicture");
 		}
 	
         LOGD("CameraHardware::initHeapLocked: Raw picture heap allocated");
@@ -1255,7 +1255,7 @@ void CameraHardware::initHeapLocked()
 		}
 		mJpegPictureHeap = mRequestMemory(-1,how_jpeg_big,1,mCallbackCookie);
 		if (!mJpegPictureHeap) { 
-			LOGE("Unable to allocate memory for RawPicture");
+			ALOGE("Unable to allocate memory for RawPicture");
 		}
 
         LOGD("CameraHardware::initHeapLocked: Jpeg picture heap allocated");
@@ -1297,7 +1297,7 @@ int CameraHardware::previewThread()
 
 		// If no raw preview buffer, we can't do anything...
 		if (mRawPreviewBuffer == 0) {
-			LOGE("No Raw preview buffer!");
+			ALOGE("No Raw preview buffer!");
 			mLock.unlock();
 			return NO_ERROR;
 		}
@@ -1309,7 +1309,7 @@ int CameraHardware::previewThread()
 		
 		// If no preview buffer, we cant do anything...
 		if (frame == 0) {
-			LOGE("No preview buffer!");
+			ALOGE("No preview buffer!");
 			mLock.unlock();
 			return NO_ERROR;
 		}
@@ -1425,7 +1425,7 @@ int CameraHardware::previewThread()
 				break; 
 				
 			default:
-				LOGE("Unhandled pixel format");
+				ALOGE("Unhandled pixel format");
 
 			}
 			
@@ -1472,7 +1472,7 @@ void CameraHardware::fillPreviewWindow(uint8_t* yuyv, int srcWidth, int srcHeigh
 {
 	// Preview to a preview window...
 	if (mWin == 0) {
-		LOGE("%s: No preview window",__FUNCTION__);
+		ALOGE("%s: No preview window",__FUNCTION__);
 		return;
 	}
 	
@@ -1481,7 +1481,7 @@ void CameraHardware::fillPreviewWindow(uint8_t* yuyv, int srcWidth, int srcHeigh
 	int stride = 0;
 	status_t res = mWin->dequeue_buffer(mWin, &buf, &stride);
 	if (res != NO_ERROR || buf == NULL) {
-        LOGE("%s: Unable to dequeue preview window buffer: %d -> %s",
+        ALOGE("%s: Unable to dequeue preview window buffer: %d -> %s",
             __FUNCTION__, -res, strerror(-res));
         return;
 	}
@@ -1489,7 +1489,7 @@ void CameraHardware::fillPreviewWindow(uint8_t* yuyv, int srcWidth, int srcHeigh
     /* Let the preview window to lock the buffer. */
     res = mWin->lock_buffer(mWin, buf);
     if (res != NO_ERROR) {
-        LOGE("%s: Unable to lock preview window buffer: %d -> %s",
+        ALOGE("%s: Unable to lock preview window buffer: %d -> %s",
              __FUNCTION__, -res, strerror(-res));
         mWin->cancel_buffer(mWin, buf);
         return;
@@ -1503,7 +1503,7 @@ void CameraHardware::fillPreviewWindow(uint8_t* yuyv, int srcWidth, int srcHeigh
     GraphicBufferMapper& grbuffer_mapper(GraphicBufferMapper::get());
     res = grbuffer_mapper.lock(*buf, GRALLOC_USAGE_SW_WRITE_OFTEN, bounds, &vaddr);
     if (res != NO_ERROR || vaddr == NULL) {
-        LOGE("%s: grbuffer_mapper.lock failure: %d -> %s",
+        ALOGE("%s: grbuffer_mapper.lock failure: %d -> %s",
              __FUNCTION__, res, strerror(res));
         mWin->cancel_buffer(mWin, buf);
         return;
@@ -1519,7 +1519,7 @@ void CameraHardware::fillPreviewWindow(uint8_t* yuyv, int srcWidth, int srcHeigh
 
 	// Make sure not to overflow the preview surface
 	if (xStart < 0 || yStart < 0) {
-		LOGE("Preview window is smaller than video preview size - Cropping image.");
+		ALOGE("Preview window is smaller than video preview size - Cropping image.");
 		
 		if (xStart < 0) {
 			srcWidth += xStart;
@@ -1612,7 +1612,7 @@ void CameraHardware::fillPreviewWindow(uint8_t* yuyv, int srcWidth, int srcHeigh
 		break;
 		
 	default:
-		LOGE("Unhandled pixel format");
+		ALOGE("Unhandled pixel format");
 	}
 				
 	/* Show it. */
@@ -1757,13 +1757,13 @@ int CameraHardware::pictureThread()
 						LOGD("CameraHardware::pictureThread: took jpeg picture compressed to %d bytes, q=%d", fileSize, quality);
 						jpeg = true;				
 					} else {
-						LOGE("Unable to allocate memory for RawPicture");
+						ALOGE("Unable to allocate memory for RawPicture");
 					}
 					free(jpegBuff);					
 					
 				} else {
 				
-					LOGE("Unable to allocate temporary memory for Jpeg compression");
+					ALOGE("Unable to allocate temporary memory for Jpeg compression");
 				}
 				
 			}
@@ -1773,7 +1773,7 @@ int CameraHardware::pictureThread()
 			camera.Close();
 		
 		} else {
-			LOGE("CameraHardware::pictureThread: failed to grab image");
+			ALOGE("CameraHardware::pictureThread: failed to grab image");
 		}
     }
 	
@@ -1811,7 +1811,7 @@ int CameraHardware::set_preview_window(struct camera_device* dev,
 {
     CameraHardware* ec = reinterpret_cast<CameraHardware*>(dev->priv);
     if (ec == NULL) {
-        LOGE("%s: Unexpected NULL camera device", __FUNCTION__);
+        ALOGE("%s: Unexpected NULL camera device", __FUNCTION__);
         return -EINVAL;
     }
     return ec->setPreviewWindow(window);
@@ -1827,7 +1827,7 @@ void CameraHardware::set_callbacks(
 {
     CameraHardware* ec = reinterpret_cast<CameraHardware*>(dev->priv);
     if (ec == NULL) {
-        LOGE("%s: Unexpected NULL camera device", __FUNCTION__);
+        ALOGE("%s: Unexpected NULL camera device", __FUNCTION__);
         return;
     }
     ec->setCallbacks(notify_cb, data_cb, data_cb_timestamp, get_memory, user);
@@ -1837,7 +1837,7 @@ void CameraHardware::enable_msg_type(struct camera_device* dev, int32_t msg_type
 {
     CameraHardware* ec = reinterpret_cast<CameraHardware*>(dev->priv);
     if (ec == NULL) {
-        LOGE("%s: Unexpected NULL camera device", __FUNCTION__);
+        ALOGE("%s: Unexpected NULL camera device", __FUNCTION__);
         return;
     }
     ec->enableMsgType(msg_type);
@@ -1847,7 +1847,7 @@ void CameraHardware::disable_msg_type(struct camera_device* dev, int32_t msg_typ
 {
     CameraHardware* ec = reinterpret_cast<CameraHardware*>(dev->priv);
     if (ec == NULL) {
-        LOGE("%s: Unexpected NULL camera device", __FUNCTION__);
+        ALOGE("%s: Unexpected NULL camera device", __FUNCTION__);
         return;
     }
     ec->disableMsgType(msg_type);
@@ -1857,7 +1857,7 @@ int CameraHardware::msg_type_enabled(struct camera_device* dev, int32_t msg_type
 {
     CameraHardware* ec = reinterpret_cast<CameraHardware*>(dev->priv);
     if (ec == NULL) {
-        LOGE("%s: Unexpected NULL camera device", __FUNCTION__);
+        ALOGE("%s: Unexpected NULL camera device", __FUNCTION__);
         return -EINVAL;
     }
     return ec->isMsgTypeEnabled(msg_type);
@@ -1867,7 +1867,7 @@ int CameraHardware::start_preview(struct camera_device* dev)
 {
     CameraHardware* ec = reinterpret_cast<CameraHardware*>(dev->priv);
     if (ec == NULL) {
-        LOGE("%s: Unexpected NULL camera device", __FUNCTION__);
+        ALOGE("%s: Unexpected NULL camera device", __FUNCTION__);
         return -EINVAL;
     }
     return ec->startPreview();
@@ -1877,7 +1877,7 @@ void CameraHardware::stop_preview(struct camera_device* dev)
 {
     CameraHardware* ec = reinterpret_cast<CameraHardware*>(dev->priv);
     if (ec == NULL) {
-        LOGE("%s: Unexpected NULL camera device", __FUNCTION__);
+        ALOGE("%s: Unexpected NULL camera device", __FUNCTION__);
         return;
     }
     ec->stopPreview();
@@ -1887,7 +1887,7 @@ int CameraHardware::preview_enabled(struct camera_device* dev)
 {
     CameraHardware* ec = reinterpret_cast<CameraHardware*>(dev->priv);
     if (ec == NULL) {
-        LOGE("%s: Unexpected NULL camera device", __FUNCTION__);
+        ALOGE("%s: Unexpected NULL camera device", __FUNCTION__);
         return -EINVAL;
     }
     return ec->isPreviewEnabled();
@@ -1898,7 +1898,7 @@ int CameraHardware::store_meta_data_in_buffers(struct camera_device* dev,
 {
     CameraHardware* ec = reinterpret_cast<CameraHardware*>(dev->priv);
     if (ec == NULL) {
-        LOGE("%s: Unexpected NULL camera device", __FUNCTION__);
+        ALOGE("%s: Unexpected NULL camera device", __FUNCTION__);
         return -EINVAL;
     }
     return ec->storeMetaDataInBuffers(enable);
@@ -1908,7 +1908,7 @@ int CameraHardware::start_recording(struct camera_device* dev)
 {
     CameraHardware* ec = reinterpret_cast<CameraHardware*>(dev->priv);
     if (ec == NULL) {
-        LOGE("%s: Unexpected NULL camera device", __FUNCTION__);
+        ALOGE("%s: Unexpected NULL camera device", __FUNCTION__);
         return -EINVAL;
     }
     return ec->startRecording();
@@ -1918,7 +1918,7 @@ void CameraHardware::stop_recording(struct camera_device* dev)
 {
     CameraHardware* ec = reinterpret_cast<CameraHardware*>(dev->priv);
     if (ec == NULL) {
-        LOGE("%s: Unexpected NULL camera device", __FUNCTION__);
+        ALOGE("%s: Unexpected NULL camera device", __FUNCTION__);
         return;
     }
     ec->stopRecording();
@@ -1928,7 +1928,7 @@ int CameraHardware::recording_enabled(struct camera_device* dev)
 {
     CameraHardware* ec = reinterpret_cast<CameraHardware*>(dev->priv);
     if (ec == NULL) {
-        LOGE("%s: Unexpected NULL camera device", __FUNCTION__);
+        ALOGE("%s: Unexpected NULL camera device", __FUNCTION__);
         return -EINVAL;
     }
     return ec->isRecordingEnabled();
@@ -1939,7 +1939,7 @@ void CameraHardware::release_recording_frame(struct camera_device* dev,
 {
     CameraHardware* ec = reinterpret_cast<CameraHardware*>(dev->priv);
     if (ec == NULL) {
-        LOGE("%s: Unexpected NULL camera device", __FUNCTION__);
+        ALOGE("%s: Unexpected NULL camera device", __FUNCTION__);
         return;
     }
     ec->releaseRecordingFrame(opaque);
@@ -1949,7 +1949,7 @@ int CameraHardware::auto_focus(struct camera_device* dev)
 {
     CameraHardware* ec = reinterpret_cast<CameraHardware*>(dev->priv);
     if (ec == NULL) {
-        LOGE("%s: Unexpected NULL camera device", __FUNCTION__);
+        ALOGE("%s: Unexpected NULL camera device", __FUNCTION__);
         return -EINVAL;
     }
     return ec->setAutoFocus();
@@ -1959,7 +1959,7 @@ int CameraHardware::cancel_auto_focus(struct camera_device* dev)
 {
     CameraHardware* ec = reinterpret_cast<CameraHardware*>(dev->priv);
     if (ec == NULL) {
-        LOGE("%s: Unexpected NULL camera device", __FUNCTION__);
+        ALOGE("%s: Unexpected NULL camera device", __FUNCTION__);
         return -EINVAL;
     }
     return ec->cancelAutoFocus();
@@ -1969,7 +1969,7 @@ int CameraHardware::take_picture(struct camera_device* dev)
 {
     CameraHardware* ec = reinterpret_cast<CameraHardware*>(dev->priv);
     if (ec == NULL) {
-        LOGE("%s: Unexpected NULL camera device", __FUNCTION__);
+        ALOGE("%s: Unexpected NULL camera device", __FUNCTION__);
         return -EINVAL;
     }
     return ec->takePicture();
@@ -1979,7 +1979,7 @@ int CameraHardware::cancel_picture(struct camera_device* dev)
 {
     CameraHardware* ec = reinterpret_cast<CameraHardware*>(dev->priv);
     if (ec == NULL) {
-        LOGE("%s: Unexpected NULL camera device", __FUNCTION__);
+        ALOGE("%s: Unexpected NULL camera device", __FUNCTION__);
         return -EINVAL;
     }
     return ec->cancelPicture();
@@ -1989,7 +1989,7 @@ int CameraHardware::set_parameters(struct camera_device* dev, const char* parms)
 {
     CameraHardware* ec = reinterpret_cast<CameraHardware*>(dev->priv);
     if (ec == NULL) {
-        LOGE("%s: Unexpected NULL camera device", __FUNCTION__);
+        ALOGE("%s: Unexpected NULL camera device", __FUNCTION__);
         return -EINVAL;
     }
     return ec->setParameters(parms);
@@ -1999,7 +1999,7 @@ char* CameraHardware::get_parameters(struct camera_device* dev)
 {
     CameraHardware* ec = reinterpret_cast<CameraHardware*>(dev->priv);
     if (ec == NULL) {
-        LOGE("%s: Unexpected NULL camera device", __FUNCTION__);
+        ALOGE("%s: Unexpected NULL camera device", __FUNCTION__);
         return NULL;
     }
     return ec->getParameters();
@@ -2009,7 +2009,7 @@ void CameraHardware::put_parameters(struct camera_device* dev, char* params)
 {
     CameraHardware* ec = reinterpret_cast<CameraHardware*>(dev->priv);
     if (ec == NULL) {
-        LOGE("%s: Unexpected NULL camera device", __FUNCTION__);
+        ALOGE("%s: Unexpected NULL camera device", __FUNCTION__);
         return;
     }
     ec->putParameters(params);
@@ -2022,7 +2022,7 @@ int CameraHardware::send_command(struct camera_device* dev,
 {
     CameraHardware* ec = reinterpret_cast<CameraHardware*>(dev->priv);
     if (ec == NULL) {
-        LOGE("%s: Unexpected NULL camera device", __FUNCTION__);
+        ALOGE("%s: Unexpected NULL camera device", __FUNCTION__);
         return -EINVAL;
     }
     return ec->sendCommand(cmd, arg1, arg2);
@@ -2032,7 +2032,7 @@ void CameraHardware::release(struct camera_device* dev)
 {
     CameraHardware* ec = reinterpret_cast<CameraHardware*>(dev->priv);
     if (ec == NULL) {
-        LOGE("%s: Unexpected NULL camera device", __FUNCTION__);
+        ALOGE("%s: Unexpected NULL camera device", __FUNCTION__);
         return;
     }
     ec->releaseCamera();
@@ -2042,7 +2042,7 @@ int CameraHardware::dump(struct camera_device* dev, int fd)
 {
     CameraHardware* ec = reinterpret_cast<CameraHardware*>(dev->priv);
     if (ec == NULL) {
-        LOGE("%s: Unexpected NULL camera device", __FUNCTION__);
+        ALOGE("%s: Unexpected NULL camera device", __FUNCTION__);
         return -EINVAL;
     }
     return ec->dumpCamera(fd);
@@ -2053,7 +2053,7 @@ int CameraHardware::close(struct hw_device_t* device)
     CameraHardware* ec =
         reinterpret_cast<CameraHardware*>(reinterpret_cast<struct camera_device*>(device)->priv);
     if (ec == NULL) {
-        LOGE("%s: Unexpected NULL camera device", __FUNCTION__);
+        ALOGE("%s: Unexpected NULL camera device", __FUNCTION__);
         return -EINVAL;
     }
     return ec->closeCamera();
