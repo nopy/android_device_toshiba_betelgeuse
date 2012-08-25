@@ -91,3 +91,6 @@ BOARD_NO_ALLOW_DEQUEUE_CURRENT_BUFFER := true
 
 # Use nicer font rendering
 BOARD_USE_SKIA_LCDTEXT := true
+
+#Other tweaks
+BOARD_USE_SCREENCAP := true
