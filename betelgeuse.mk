@@ -145,6 +145,7 @@ PRODUCT_PACKAGES := \
 PRODUCT_PROPERTY_OVERRIDES := \
     ro.opengles.version=131072 \
     wifi.interface=wlan0 \
+    wifi.p2pinterface=wlan1 \
     keyguard.no_require_sim=true \
     hwui.render_dirty_regions=false \
     ro.sf.lcd_density=120
