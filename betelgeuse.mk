@@ -18,7 +18,6 @@ PRODUCT_COPY_FILES += \
     device/toshiba/betelgeuse/init.betelgeuse.rc:root/init.betelgeuse.rc \
     device/toshiba/betelgeuse/init.nv_dev_board.usb.rc:root/init.nv_dev_board.usb.rc \
     device/toshiba/betelgeuse/ueventd.betelgeuse.rc:root/ueventd.betelgeuse.rc \
-    device/toshiba/betelgeuse/media_profiles.xml:system/etc/media_profiles.xml \
     device/toshiba/betelgeuse/egalax_i2c.idc:system/usr/idc/egalax_i2c.idc \
     device/toshiba/betelgeuse/egalax_ts.idc:system/usr/idc/egalax_ts.idc \
     frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
@@ -35,6 +34,18 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
     frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
     frameworks/native/data/etc/tablet_core_hardware.xml:system/etc/permissions/tablet_core_hardware.xml 
+
+# Graphics
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/media_profiles.xml:system/etc/media_profiles.xml
+
+# Codecs
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/media_codecs.xml:system/etc/media_codecs.xml
+
+# Audio policy configuration
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/audio_policy.conf:system/etc/audio_policy.conf
 
 # Keychars
 # Keylayout
