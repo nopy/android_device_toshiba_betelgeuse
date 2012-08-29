@@ -196,6 +196,9 @@ PRODUCT_PACKAGES += \
     FolioParts \
     wmiconfig
 
+# 3G
+PRODUCT_PACKAGES += rild
+
 # Filesystem management tools
 PRODUCT_PACKAGES += \
     make_ext4fs
