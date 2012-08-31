@@ -59,8 +59,8 @@
 
 /* ALSA ports for card0 */
 #define PCM_DEVICE_MM		0 /* CODEC port */
-#define PCM_DEVICE_SCO 		1 /* Bluetooth/3G port */
-#define PCM_DEVICE_SPDIF 	2 /* SPDIF (HDMI) port */
+#define PCM_DEVICE_SPDIF 	1 /* SPDIF (HDMI) port */
+#define PCM_DEVICE_SCO 		2 /* Bluetooth/3G port */
 
 /* conversions from Percent to codec gains */
 #define PERC_TO_PCM_VOLUME(x)     ( (int)((x) * 120 ))
