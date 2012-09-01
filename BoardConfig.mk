@@ -46,9 +46,8 @@ BOARD_WLAN_CHIP_AR6003			:= true
 # 3G
 BOARD_MOBILEDATA_INTERFACE_NAME := "ppp0"
 
+# Bluetooth
 BOARD_HAVE_BLUETOOTH := true
-BOARD_HAVE_BLUETOOTH_BCM := true
-#BOARD_HAVE_BLUETOOTH_CSR := true
 
 BOARD_KERNEL_CMDLINE := no_console_suspend=1 console=tty0,115200n8 video=tegrafb androidboot.hardware=betelgeuse
 
