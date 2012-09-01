@@ -89,3 +89,7 @@ BOARD_USE_SKIA_LCDTEXT := true
 
 #Other tweaks
 BOARD_USE_SCREENCAP := true
+BOARD_USES_SECURE_SERVICES := true
+
+# Avoid generating of ldrcc instructions
+NEED_WORKAROUND_CORTEX_A9_745320 := true
