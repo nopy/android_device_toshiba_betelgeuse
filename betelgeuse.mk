@@ -124,7 +124,6 @@ PRODUCT_PACKAGES += \
     libhuaweigeneric-ril \
     audio.primary.tegra \
     audio.a2dp.default \
-    FolioParts \
     wmiconfig
 
 # 3G
