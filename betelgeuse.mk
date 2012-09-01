@@ -47,77 +47,32 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/audio_policy.conf:system/etc/audio_policy.conf
 
 # Keychars
-# Keylayout
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/keychars/cpcap-key.kcm:system/usr/keychars/cpcap-key.kcm \
     $(LOCAL_PATH)/keychars/gpio-keys.kcm:system/usr/keychars/gpio-keys.kcm \
     $(LOCAL_PATH)/keychars/nvec_cir.kcm:system/usr/keychars/nvec_cir.kcm \
     $(LOCAL_PATH)/keychars/nvec_keyboard.kcm:system/usr/keychars/nvec_keyboard.kcm \
-    $(LOCAL_PATH)/keychars/tegra-kbc.kcm:system/usr/keychars/tegra-kbc.kcm \
+    $(LOCAL_PATH)/keychars/tegra-kbc.kcm:system/usr/keychars/tegra-kbc.kcm
+
+# Keylayout
+PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/keylayout/cpcap-key.kl:system/usr/keylayout/cpcap-key.kl \
     $(LOCAL_PATH)/keylayout/gpio-keys.kl:system/usr/keylayout/gpio-keys.kl \
     $(LOCAL_PATH)/keylayout/nvec_cir.kl:system/usr/keylayout/nvec_cir.kl \
     $(LOCAL_PATH)/keylayout/nvec_keyboard.kl:system/usr/keylayout/nvec_keyboard.kl \
-    $(LOCAL_PATH)/keylayout/tegra-kbc.kl:system/usr/keylayout/tegra-kbc.kl 
+    $(LOCAL_PATH)/keylayout/tegra-kbc.kl:system/usr/keylayout/tegra-kbc.kl
 
 # Vold
 PRODUCT_COPY_FILES += \
         $(LOCAL_PATH)/vold.fstab:system/etc/vold.fstab
 
-
-# Kernel modules
-#PRODUCT_COPY_FILES += \
-#    device/toshiba/betelgeuse/modules/scsi_wait_scan.ko:system/modules/scsi_wait_scan.ko \
-#    device/toshiba/betelgeuse/modules/bcm4329.ko:system/modules/bcm4329.ko 
-
+# Bluetooth firmware
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi/ar3k/30101coex/PS_ASIC.pst:/system/wifi/ar3k/30101coex/PS_ASIC.pst \
     $(LOCAL_PATH)/wifi/ar3k/30101coex/RamPatch.txt:/system/wifi/ar3k/30101coex/RamPatch.txt
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf
-
-#PRODUCT_COPY_FILES += \
-#    $(LOCAL_PATH)/wifi/dhcpcd.conf:system/etc/dhcpcd/dhcpcd.conf \
-#    $(LOCAL_PATH)/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
-#    $(LOCAL_PATH)/wifi/hostapd.conf:/etc/wifi/hostapd.conf \
-#    $(LOCAL_PATH)/wifi/ar3k/30101/PS_ASIC.pst:/system/wifi/ar3k/30101/PS_ASIC.pst \
-#    $(LOCAL_PATH)/wifi/ar3k/30101/RamPatch.txt:/system/wifi/ar3k/30101/RamPatch.txt \
-#    $(LOCAL_PATH)/wifi/ar3k/30101coex/PS_ASIC.pst:/system/wifi/ar3k/30101coex/PS_ASIC.pst \
-#    $(LOCAL_PATH)/wifi/ar3k/30101coex/RamPatch.txt:/system/wifi/ar3k/30101coex/RamPatch.txt \
-#    $(LOCAL_PATH)/wifi/ath6k/AR6003/hw2.0/otp.bin.z77:/system/wifi/ath6k/AR6003/hw2.0/otp.bin.z77 \
-#    $(LOCAL_PATH)/wifi/ath6k/AR6003/hw2.0/data.patch.bin:/system/wifi/ath6k/AR6003/hw2.0/data.patch.bin \
-#    $(LOCAL_PATH)/wifi/ath6k/AR6003/hw2.0/athwlan.bin.z77:/system/wifi/ath6k/AR6003/hw2.0/athwlan.bin.z77 \
-#    $(LOCAL_PATH)/wifi/ath6k/AR6003/hw2.0/athtcmd_ram.bin:/system/wifi/ath6k/AR6003/hw2.0/athtcmd_ram.bin \
-#    $(LOCAL_PATH)/wifi/ath6k/AR6003/hw2.0/bdata.SD31.bin:/system/wifi/ath6k/AR6003/hw2.0/bdata.SD31.bin \
-#    $(LOCAL_PATH)/wifi/ath6k/AR6003/hw2.0/bdata.WB31.bin:/system/wifi/ath6k/AR6003/hw2.0/bdata.WB31.bin
-
-#PRODUCT_COPY_FILES += \
-#    $(LOCAL_PATH)/wifi2/ath6k/AR6003/hw2.0/athwlan.bin.z77:/system/etc/firmware/ath6k/AR6003/hw2.0/athwlan.bin.z77 \
-#    $(LOCAL_PATH)/wifi2/ath6k/AR6003/hw2.0/bdata.WB31.bin:/system/etc/firmware/ath6k/AR6003/hw2.0/bdata.WB31.bin \
-#    $(LOCAL_PATH)/wifi2/ath6k/AR6003/hw2.0/otp.bin.z77:/system/etc/firmware/ath6k/AR6003/hw2.0/otp.bin.z77 \
-#    $(LOCAL_PATH)/wifi2/ath6k/AR6003/hw2.0/bdata.SD31.bin:/system/etc/firmware/ath6k/AR6003/hw2.0/bdata.SD31.bin \
-#    $(LOCAL_PATH)/wifi2/ath6k/AR6003/hw2.0/data.patch.bin:/system/etc/firmware/ath6k/AR6003/hw2.0/data.patch.bin \
-#    $(LOCAL_PATH)/wifi2/ath6k/AR6003/hw2.0/bdata.SD32.bin:/system/etc/firmware/ath6k/AR6003/hw2.0/bdata.SD32.bin \
-#    $(LOCAL_PATH)/wifi2/ar3k/30101/ar3kbdaddr.pst:/system/etc/firmware/ar3k/30101/ar3kbdaddr.pst \
-#    $(LOCAL_PATH)/wifi2/ar3k/30101/PS_ASIC.pst:/system/etc/firmware/ar3k/30101/PS_ASIC.pst \
-#    $(LOCAL_PATH)/wifi2/ar3k/30101/RamPatch.txt:/system/etc/firmware/ar3k/30101/RamPatch.txt \
-#    $(LOCAL_PATH)/wifi2/ar3k/ramps_0x01020200_40.dfu:/system/etc/firmware/ar3k/ramps_0x01020200_40.dfu \
-#    $(LOCAL_PATH)/wifi2/ar3k/ramps_0x01020001_26.dfu:/system/etc/firmware/ar3k/ramps_0x01020001_26.dfu \
-#    $(LOCAL_PATH)/wifi2/ar3k/AthrBT_0x01020200.dfu:/system/etc/firmware/ar3k/AthrBT_0x01020200.dfu \
-#    $(LOCAL_PATH)/wifi2/ar3k/30000/ar3kbdaddr.pst:/system/etc/firmware/ar3k/30000/ar3kbdaddr.pst \
-#    $(LOCAL_PATH)/wifi2/ar3k/30000/PS_ASIC.pst:/system/etc/firmware/ar3k/30000/PS_ASIC.pst \
-#    $(LOCAL_PATH)/wifi2/ar3k/30000/RamPatch.txt:/system/etc/firmware/ar3k/30000/RamPatch.txt \
-#    $(LOCAL_PATH)/wifi2/ar3k/1020200/ar3kbdaddr.pst:/system/etc/firmware/ar3k/1020200/ar3kbdaddr.pst \
-#    $(LOCAL_PATH)/wifi2/ar3k/1020200/PS_ASIC.pst:/system/etc/firmware/ar3k/1020200/PS_ASIC.pst \
-#    $(LOCAL_PATH)/wifi2/ar3k/1020200/RamPatch.txt:/system/etc/firmware/ar3k/1020200/RamPatch.txt \
-#    $(LOCAL_PATH)/wifi2/ar3k/30101coex/ar3kbdaddr.pst:/system/etc/firmware/ar3k/30101coex/ar3kbdaddr.pst \
-#    $(LOCAL_PATH)/wifi2/ar3k/30101coex/PS_ASIC.pst:/system/etc/firmware/ar3k/30101coex/PS_ASIC.pst \
-#    $(LOCAL_PATH)/wifi2/ar3k/30101coex/PS_ASIC_aclLowPri.pst:/system/etc/firmware/ar3k/30101coex/PS_ASIC_aclLowPri.pst \
-#    $(LOCAL_PATH)/wifi2/ar3k/30101coex/PS_ASIC_aclHighPri.pst:/system/etc/firmware/ar3k/30101coex/PS_ASIC_aclHighPri.pst \
-#    $(LOCAL_PATH)/wifi2/ar3k/30101coex/RamPatch.txt:/system/etc/firmware/ar3k/30101coex/RamPatch.txt \
-#    $(LOCAL_PATH)/wifi2/ar3k/ramps_0x01020200_26.dfu:/system/etc/firmware/ar3k/ramps_0x01020200_26.dfu \
-#    $(LOCAL_PATH)/wifi2/ar3k/AthrBT_0x01020001.dfu:/system/etc/firmware/ar3k/AthrBT_0x01020001.dfu
 
 # Some files for 3G
 PRODUCT_COPY_FILES += \
@@ -202,5 +157,3 @@ PRODUCT_PACKAGES += \
 
 $(call inherit-product-if-exists, vendor/toshiba/betelgeuse/device-vendor.mk)
 $(call inherit-product, frameworks/native/build/phone-hdpi-512-dalvik-heap.mk)
-$(call inherit-product-if-exists, hardware/AR6kSDK.3.0/host/device-ath6k.mk)
-
