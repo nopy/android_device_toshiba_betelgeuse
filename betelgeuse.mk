@@ -132,5 +132,10 @@ PRODUCT_PACKAGES += rild
 PRODUCT_PACKAGES += \
     make_ext4fs
 
+# mkfs.vfat
+PRODUCT_PACKAGES += \
+   recovery_mkfs.vfat \
+   mkfs.vfat
+
 $(call inherit-product-if-exists, vendor/toshiba/betelgeuse/device-vendor.mk)
 $(call inherit-product, frameworks/native/build/phone-hdpi-512-dalvik-heap.mk)
