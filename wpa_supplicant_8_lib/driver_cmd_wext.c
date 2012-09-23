@@ -338,6 +338,8 @@ int wpa_driver_wext_driver_cmd( void *priv, char *cmd, char *buf, size_t buf_len
 		return 0; /* unsupport function */
 	} else if (os_strcmp(cmd, "SETSUSPENDOPT")==0) {
 		return 0; /* unsupport function */
+	} else if (os_strcmp(cmd, "SETSUSPENDMODE")==0) {
+		return 0; /* unsupport function */
 	} else if (os_strncmp(cmd, "POWERMODE ", 10)==0) {
 		int mode;
 		if (sscanf(cmd, "%*s %d", &mode) == 1) {
