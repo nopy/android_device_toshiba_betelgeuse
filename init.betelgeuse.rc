@@ -143,8 +143,8 @@ service iprenew_bnep0 /system/bin/dhcpcd -n
 	oneshot
 
 service hwprops /sbin/hwprops
-    disabled
-    oneshot
+	disabled
+	oneshot
 
 service compcache /system/bin/handle_compcache
 	class main
