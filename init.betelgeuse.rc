@@ -145,3 +145,18 @@ service iprenew_bnep0 /system/bin/dhcpcd -n
 service hwprops /sbin/hwprops
     disabled
     oneshot
+
+service compcache /system/bin/handle_compcache
+	class main
+	user root
+	group root
+	disabled
+
+on property:persist.service.zram=10
+	start compcache
+
+on property:persist.service.zram=18
+	start compcache
+
+on property:persist.service.zram=26
+	start compcache
