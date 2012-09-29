@@ -73,11 +73,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf
 
-# Some files for 3G
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/ppp/ip-up:/system/etc/ppp/ip-up \
-    $(LOCAL_PATH)/ppp/ip-down:/system/etc/ppp/ip-down
-
 PRODUCT_PACKAGES := \
     make_ext4fs \
     com.android.future.usb.accessory \
