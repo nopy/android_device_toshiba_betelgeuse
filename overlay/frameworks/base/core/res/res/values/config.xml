@@ -21,21 +21,19 @@
      for different hardware and product builds. -->
 <resources>
 
-    <!-- This device is not "voice capable"; it's data-only. -->
     <bool name="config_voice_capable">true</bool>
 
-    <!-- This device does not allow sms service. -->
     <bool name="config_sms_capable">true</bool>
     
-        <bool name="config_showNavigationBar">false</bool>
+    <bool name="config_showNavigationBar">false</bool>
 
     <string name="config_datause_iface">wlan0</string>
 
     <bool name="config_batterySdCardAccessibility">true</bool>
 
-   <bool name="config_allowAllRotations">true</bool>
+    <bool name="config_allowAllRotations">true</bool>
 
-   <bool name="config_sf_slowBlur">true</bool>
+    <bool name="config_sf_slowBlur">true</bool>
 
     <string-array translatable="false" name="config_tether_usb_regexs">
 	<item>"rndis0"</item>
