@@ -5,6 +5,6 @@
 /data		ext4		/dev/block/mmcblk0p5
 /misc		emmc		/dev/block/mmcblk0p3
 /recovery	emmc		/dev/block/mmcblk0p6
-/sdcard		vfat		/dev/block/mmcblk1p1
+/sdcard		vfat		/dev/block/mmcblk0p7
 /system		ext4		/dev/block/mmcblk0p1
-/emmc		vfat		/dev/block/mmcblk0p7
+/external_sd	vfat		/dev/block/mmcblk1p1
