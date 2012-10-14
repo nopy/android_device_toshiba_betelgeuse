@@ -18,15 +18,10 @@ TARGET_BOOTLOADER_BOARD_NAME := betelgeuse
 
 ARCH_ARM_HAVE_TLS_REGISTER := true
 
-#BOARD_USES_HGL := true
-#BOARD_USES_OVERLAY := true
 USE_OPENGL_RENDERER := true
 
 # Modem
 TARGET_NO_RADIOIMAGE := true
-
-# Use Old Style USB Mounting Untill we get kernel source
-BOARD_USE_USB_MASS_STORAGE_SWITCH := true
 
 # custom recovery ui
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/toshiba/betelgeuse/recovery/recovery_ui.c
@@ -79,9 +74,6 @@ BOARD_SYSTEMIMAGE_PARTITION_SIZE := 536870912
 #BOARD_USERDATAIMAGE_PARTITION_SIZE := 107374182
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 429496728
 BOARD_FLASH_BLOCK_SIZE := 131072
-
-# Indicate that the board has an Internal SD Card
-#BOARD_HAS_SDCARD_INTERNAL := true
 
 BOARD_DATA_DEVICE := /dev/block/mmcblk0p5
 BOARD_DATA_FILESYSTEM := ext4
