@@ -44,6 +44,7 @@ BOARD_MOBILEDATA_INTERFACE_NAME := "ppp0"
 
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/toshiba/betelgeuse/bluetooth
 
 ### Partitioning table by vendor ###
 # For 8 GB devices
