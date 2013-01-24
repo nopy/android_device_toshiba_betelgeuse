@@ -919,6 +919,9 @@ void CameraHardware::initDefaultParameters()
 	// Focus modes
 	p.set(CameraParameters::KEY_SUPPORTED_FOCUS_MODES,"fixed");
 	p.set(CameraParameters::KEY_FOCUS_MODE,"fixed");
+
+	// compensations step
+	p.set(CameraParameters::KEY_EXPOSURE_COMPENSATION_STEP, "0");
 	
 #if 0
 	p.set(CameraParameters::KEY_JPEG_THUMBNAIL_HEIGHT,0); 
