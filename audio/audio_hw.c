@@ -40,6 +40,7 @@
 
 #define PCM_CARD 0
 #define PCM_DEVICE 0
+#define PCM_DEVICE_HDMI 1
 #define PCM_DEVICE_SCO 2
 
 #define OUT_PERIOD_SIZE 512
@@ -179,12 +180,14 @@ static void select_devices(struct audio_device *adev)
     int speaker_on;
     int docked;
     int main_mic_on;
+    int hdmi_on;
 
     headphone_on = adev->out_device & (AUDIO_DEVICE_OUT_WIRED_HEADSET |
                                     AUDIO_DEVICE_OUT_WIRED_HEADPHONE);
     speaker_on = adev->out_device & AUDIO_DEVICE_OUT_SPEAKER;
     docked = adev->out_device & AUDIO_DEVICE_OUT_ANLG_DOCK_HEADSET;
     main_mic_on = adev->in_device & AUDIO_DEVICE_IN_BUILTIN_MIC;
+    hdmi_on = adev->out_device & AUDIO_DEVICE_OUT_AUX_DIGITAL;
 
     reset_mixer_state(adev->ar);
 
@@ -203,8 +206,8 @@ static void select_devices(struct audio_device *adev)
 
     update_mixer_state(adev->ar);
 
-    ALOGV("hp=%c speaker=%c dock=%c main-mic=%c", headphone_on ? 'y' : 'n',
-          speaker_on ? 'y' : 'n', docked ? 'y' : 'n', main_mic_on ? 'y' : 'n');
+    ALOGV("hp=%c speaker=%c dock=%c hdmi=%c main-mic=%c", headphone_on ? 'y' : 'n',
+          speaker_on ? 'y' : 'n', docked ? 'y' : 'n', hdmi_on ? 'y' : 'n', main_mic_on ? 'y' : 'n');
 }
 
 /* must be called with hw device and output stream mutexes locked */
@@ -266,7 +269,12 @@ static int start_output_stream(struct stream_out *out)
         device = PCM_DEVICE_SCO;
         out->pcm_config = &pcm_config_sco;
     } else {
-        device = PCM_DEVICE;
+	if (adev->out_device & AUDIO_DEVICE_OUT_AUX_DIGITAL) {
+		device = PCM_DEVICE_HDMI;
+	} else {
+	        device = PCM_DEVICE;
+	}
+
         out->pcm_config = &pcm_config_out;
         out->buffer_type = OUT_BUFFER_TYPE_UNKNOWN;
     }
@@ -557,11 +565,11 @@ static int out_set_parameters(struct audio_stream *stream, const char *kvpairs)
         val = atoi(value);
         if ((adev->out_device != val) && (val != 0)) {
             /*
-             * If SCO is turned on/off, we need to put audio into standby
-             * because SCO uses a different PCM.
+             * If SCO or HDMI is turned on/off, we need to put audio into standby
+             * because SCO and HDMI uses a different PCM.
              */
-            if ((val & AUDIO_DEVICE_OUT_ALL_SCO) ^
-                    (adev->out_device & AUDIO_DEVICE_OUT_ALL_SCO)) {
+            if ((val & AUDIO_DEVICE_OUT_ALL_SCO) ^ (adev->out_device & AUDIO_DEVICE_OUT_ALL_SCO) ||
+		(val & AUDIO_DEVICE_OUT_AUX_DIGITAL) ^ (adev->out_device & AUDIO_DEVICE_OUT_AUX_DIGITAL)) {
                 pthread_mutex_lock(&out->lock);
                 do_out_standby(out);
                 pthread_mutex_unlock(&out->lock);
