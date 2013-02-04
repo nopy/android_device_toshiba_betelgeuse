@@ -18,6 +18,7 @@ PRODUCT_COPY_FILES += \
     device/toshiba/betelgeuse/init.betelgeuse.rc:root/init.betelgeuse.rc \
     device/toshiba/betelgeuse/init.nv_dev_board.usb.rc:root/init.nv_dev_board.usb.rc \
     device/toshiba/betelgeuse/ueventd.betelgeuse.rc:root/ueventd.betelgeuse.rc \
+    device/toshiba/betelgeuse/fstab.betelgeuse:root/fstab.betelgeuse \
     device/toshiba/betelgeuse/egalax_ts.idc:system/usr/idc/egalax_ts.idc \
     frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
     frameworks/native/data/etc/android.hardware.camera.front.xml:system/etc/permissions/android.hardware.camera.front.xml \

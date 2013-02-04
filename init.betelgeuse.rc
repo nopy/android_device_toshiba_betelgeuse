@@ -3,32 +3,39 @@ import init.nv_dev_board.usb.rc
 on early-init
     mount debugfs debugfs /sys/kernel/debug
 
-    # for backwards compatibility
-    export EXTERNAL_STORAGE /storage/sdcard0
+on init
+    # See storage config details at http://source.android.com/tech/storage/
+    mkdir /mnt/shell/emulated 0700 shell shell
+    mkdir /storage/emulated 0555 root root
 
-    # create directory for mounting internal storage
-    mkdir /storage 0050 system sdcard_r
-    mkdir /storage/sdcard0 0000 system system
-    symlink /storage/sdcard0 /sdcard
-    symlink /storage/sdcard0 /mnt/sdcard
+    export EXTERNAL_STORAGE /storage/emulated/legacy
+    export EMULATED_STORAGE_SOURCE /mnt/shell/emulated
+    export EMULATED_STORAGE_TARGET /storage/emulated
 
-    # create directory for mounting external sdcard
-    mkdir /storage/sdcard1 0000 system system
-    symlink /storage/sdcard1 /external_sd
-    symlink /storage/sdcard1 /mnt/external_sd
+    # Support legacy paths
+    symlink /storage/emulated/legacy /sdcard
+    symlink /storage/emulated/legacy /mnt/sdcard
+    symlink /storage/emulated/legacy /storage/sdcard0
+    symlink /mnt/shell/emulated/0 /storage/emulated/legacy
 
     # create directory for mounting usb drives
     mkdir /storage/usbdisk 0666 system system
     symlink /storage/usbdisk /mnt/usbdisk
     symlink /mnt/usbdisk /usbdisk
 
+    # create directory for mounting external sdcard
+    mkdir /storage/sdcard1 0666 system system
+    symlink /storage/sdcard1 /mnt/external_sd
+    symlink /storage/sdcard1 /external_sd
+
 on fs
-    mount ext4 /dev/block/mmcblk0p1 /system wait rw
+    setprop ro.crypto.umount_sd false
+    mount_all /fstab.betelgeuse
+
+    mount ext4 /dev/block/mmcblk0p1 /system wait rw remount
     chmod 4755 /system/bin/pppd
     mount ext4 /dev/block/mmcblk0p1 /system wait ro remount
-    setprop ro.crypto.tmpfs_options size=128m,mode=0771,uid=1000,gid=1000
-    mount ext4 /dev/block/mmcblk0p5 /data wait noatime
-    mount ext4 /dev/block/mmcblk0p2 /cache wait noatime
+
     insmod /system/wifi/ar6000.ko targetconf=tablet devmode=sta,sta submode=none,p2pdev
     insmod /system/lib/modules/ntfs.ko
     insmod /system/lib/modules/cifs.ko
@@ -152,6 +159,15 @@ service compcache /system/bin/handle_compcache
 	user root
 	group root
 	disabled
+
+# create filesystems if necessary
+service setup_fs /system/bin/setup_fs \
+	/dev/block/mmcblk0p5 \
+	/dev/block/mmcblk0p2
+	class core
+	user root
+	group root
+	oneshot
 
 on property:persist.service.zram=10
 	start compcache
