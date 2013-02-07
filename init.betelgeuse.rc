@@ -41,9 +41,15 @@ on fs
     insmod /system/lib/modules/cifs.ko
 
 on post-fs-data
+    mkdir /data/misc/wifi 0770 wifi wifi
     mkdir /data/misc/wifi/sockets 0770 wifi wifi
     mkdir /data/misc/dhcp 0770 dhcp dhcp
     chown dhcp dhcp /data/misc/dhcp
+
+    mkdir /data/media 0770 media_rw media_rw
+
+    # change back to bluetooth from system
+    chown bluetooth net_bt_stack /data/misc/bluetooth
 
     # Set indication (checked by vold) that we have finished this action
     setprop vold.post_fs_data_done 1
