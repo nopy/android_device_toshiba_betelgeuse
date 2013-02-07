@@ -166,6 +166,10 @@ service compcache /system/bin/handle_compcache
 	group root
 	disabled
 
+# virtual sdcard daemon running as media_rw (1023)
+service sdcard /system/bin/sdcard /data/media /mnt/shell/emulated 1023 1023
+	class late_start
+
 # create filesystems if necessary
 service setup_fs /system/bin/setup_fs \
 	/dev/block/mmcblk0p5 \
