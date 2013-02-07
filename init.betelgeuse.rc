@@ -172,8 +172,7 @@ service sdcard /system/bin/sdcard /data/media /mnt/shell/emulated 1023 1023
 
 # create filesystems if necessary
 service setup_fs /system/bin/setup_fs \
-	/dev/block/mmcblk0p5 \
-	/dev/block/mmcblk0p2
+	mmcblk0p5 mmcblk0p2
 	class core
 	user root
 	group root
