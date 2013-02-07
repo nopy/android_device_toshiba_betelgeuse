@@ -121,7 +121,8 @@ PRODUCT_PACKAGES += \
     libhuaweigeneric-ril \
     audio.primary.tegra \
     audio.a2dp.default \
-    wmiconfig
+    wmiconfig \
+    setup_fs
 
 # 3G
 PRODUCT_PACKAGES += rild
