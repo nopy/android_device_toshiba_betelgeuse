@@ -113,7 +113,7 @@ PRODUCT_TAGS += dalvik.gc.type-precise
 PRODUCT_PACKAGES += \
     librs_jni \
     liba2dp \
-    lights.tegra \
+    lights.betelgeuse \
     com.android.future.usb.accessory \
     camera.betelgeuse \
     libpkip \
@@ -121,9 +121,9 @@ PRODUCT_PACKAGES += \
     tinyplay \
     tinycap \
     tinymix \
-    sensors.tegra \
+    sensors.betelgeuse \
     libhuaweigeneric-ril \
-    audio.primary.tegra \
+    audio.primary.betelgeuse \
     audio.a2dp.default \
     wmiconfig \
     setup_fs

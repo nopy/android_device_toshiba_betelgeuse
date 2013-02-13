@@ -28,6 +28,6 @@ LOCAL_MODULE_TAGS := optional
 
 LOCAL_SHARED_LIBRARIES := liblog
 
-LOCAL_MODULE := lights.tegra
+LOCAL_MODULE := lights.$(PRODUCT_DEVICE)
 
 include $(BUILD_SHARED_LIBRARY)
