@@ -111,7 +111,7 @@ PRODUCT_PACKAGES += \
     liba2dp \
     lights.tegra \
     com.android.future.usb.accessory \
-    camera.tegra \
+    camera.betelgeuse \
     libpkip \
     libaudioutils \
     tinyplay \

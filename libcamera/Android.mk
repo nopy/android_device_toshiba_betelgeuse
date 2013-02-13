@@ -23,7 +23,7 @@ LOCAL_SRC_FILES:= \
 
 LOCAL_SHARED_LIBRARIES:= libutils libbinder libui liblog libcamera_client libcutils libmedia libandroid_runtime libhardware_legacy libc libstdc++ libm libjpeg libandroid
 
-LOCAL_MODULE:= camera.tegra
+LOCAL_MODULE:= camera.$(PRODUCT_DEVICE)
 LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/hw
 LOCAL_MODULE_TAGS:= optional
 
