@@ -5,7 +5,7 @@ include $(CLEAR_VARS)
 # Include kerne headers in a proper way later on
 #LOCAL_C_INCLUDES:= $(LOCAL_PATH)/../../../../kernel/include
 
-LOCAL_MODULE := sensors.$(PRODUCT_DEVICE)
+LOCAL_MODULE := sensors.$(TARGET_DEVICE)
 LOCAL_MODULE_TAGS := optional
 
 LOCAL_PRELINK_MODULE := false
