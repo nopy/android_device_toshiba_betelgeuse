@@ -16,7 +16,7 @@
 
 PRODUCT_COPY_FILES += \
     device/toshiba/betelgeuse/init.betelgeuse.rc:root/init.betelgeuse.rc \
-    device/toshiba/betelgeuse/init.nv_dev_board.usb.rc:root/init.nv_dev_board.usb.rc \
+    device/toshiba/betelgeuse/init.betelgeuse.usb.rc:root/init.betelgeuse.usb.rc \
     device/toshiba/betelgeuse/ueventd.betelgeuse.rc:root/ueventd.betelgeuse.rc \
     device/toshiba/betelgeuse/fstab.betelgeuse:root/fstab.betelgeuse \
     device/toshiba/betelgeuse/egalax_ts.idc:system/usr/idc/egalax_ts.idc \
@@ -93,6 +93,9 @@ PRODUCT_PROPERTY_OVERRIDES := \
     hwui.render_dirty_regions=false \
     ro.sf.lcd_density=120
 
+# Set default USB interface
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    persist.sys.usb.config=mtp
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     ro.secure=0 \

@@ -1,4 +1,4 @@
-import init.nv_dev_board.usb.rc
+import init.betelgeuse.usb.rc
 
 on early-init
     mount debugfs debugfs /sys/kernel/debug
